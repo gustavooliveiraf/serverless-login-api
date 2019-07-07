@@ -3,7 +3,7 @@ const { errors } = require('server/utils')
 
 const create = async (req, res) => {
   try {
-    for (i of req.payload.phones) {
+    for (var i of req.payload.phones) {
       await PhoneModel.create({
         userId: req.payload.user.id,
         ...i
