@@ -6,7 +6,7 @@ module.exports = {
     email: Joi.string().email({ minDomainSegments }).lowercase().required(),
     password: Joi.string().max(constant.maxString).required(),
     guid: Joi.string().max(constant.maxString).required(),
-    lastLogin: Joi.string().max(constant.maxString).required(),
+    lastLogin: Joi.date().required(),
     token: Joi.string().max(constant.maxString).required()
   }),
   signIn: Joi.object().keys({

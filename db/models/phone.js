@@ -37,7 +37,9 @@ module.exports = (sequelize, DataTypes) => {
     schema: 'register'
   });
   Phone.associate = function(models) {
-    // associations can be defined here
+    Phone.belongsTo(models.User, {
+      foreignKey: 'userId'
+    })
   };
   return Phone;
 };

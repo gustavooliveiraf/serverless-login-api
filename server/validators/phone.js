@@ -1,4 +1,4 @@
-const { Joi } = require('server/utils')
+const { Joi, errors } = require('server/utils')
 const schema = require('server/schemas/phone')
 
 const create = (req, res, next) => {

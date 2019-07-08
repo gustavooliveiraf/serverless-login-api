@@ -1,11 +1,11 @@
 const bcrypt = require('bcryptjs')
 
 module.exports = {
-  generate: password => {
+  generate: str => {
     let salt = bcrypt.genSaltSync()
-    let hash = bcrypt.hashSync(password, salt)
+    let hash = bcrypt.hashSync(str, salt)
 
     return hash
   },
-  compare: (queryPassword, dbPassword) => bcrypt.compareSync(queryPassword, dbPassword)
+  compare: (str, hash) => bcrypt.compareSync(str, hash)
 }

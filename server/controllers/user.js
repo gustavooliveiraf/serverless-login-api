@@ -1,5 +1,6 @@
 const UserModel = require('db/models').User
-const { message, errors, hash, constant, formatDate } = require('server/utils')
+const PhoneModel = require('db/models').Phone
+const { message, errors, jwt, hash, constant, formatDate } = require('server/utils')
 
 const create = async (req, res, next) => {
   try {
@@ -14,25 +15,38 @@ const create = async (req, res, next) => {
     if (user[1]) {
       delete user[0].dataValues.password
       req.payload.user = user[0]
+      req.payload.user.dataValues.token = req.token
       formatFieldDate(req.payload.user.dataValues)
+
 
       next()
     } else {
-      return errors.notAcceptable(res, message.emailAlreadyExists)
+      return errors.badRequest(res, message.emailAlreadyExists)
     }
   } catch (err) {
     return errors.InternalServerError(res, err)
   }
 }
 
-const update = async (id, lastLogin) => {
-  return await UserModel.update({
-    lastLogin
+const update = async (id, guid) => {
+  let token = jwt.generate(guid)
+  let payload = {
+    token: hash.generate(token),
+    lastLogin: new Date()
+  }
+
+  await UserModel.update({
+    ...payload
   }, {
     where: {
       id
     }
   })
+
+  return  {
+    token,
+    lastLogin: payload.lastLogin
+  }
 }
 
 const signIn = async (req, res) => {
@@ -46,11 +60,13 @@ const signIn = async (req, res) => {
     if (!user) {
       return errors.notAcceptable(res, message.invalidUser)
     } else if (user && hash.compare(req.query.password, user.password)) {
-      let lastLogin = (new Date()).toISOString()
-      await update(user.id, lastLogin)
-      user.dataValues.lastLogin = lastLogin
-
+      let payload = await update(user.id, user.guid)
+      user.dataValues.lastLogin = payload.lastLogin
+      user.dataValues.token = payload.token
       delete user.dataValues.password
+
+      formatFieldDate(user.dataValues)
+
       return res.status(200).send(user)
     } else {
       return errors.unauthorized(res, message.invalidUser)
@@ -67,10 +83,14 @@ const search = async (req, res) => {
         id: req.params.userId
       }, attributes: {
         exclude: ['password']
-      }
+      },
+      include: [{
+        model: PhoneModel,
+        as: 'phones'
+      }]
     })
 
-    if (user.token === req.headers.authentication) {
+    if (user && hash.compare(req.headers.authentication, user.token)) {
       if ((Date.now() - user.dataValues.createdAt.valueOf())/constant.msInMinute < constant.limLastLogin) {
         formatFieldDate(user.dataValues)
         return res.status(200).send(user)

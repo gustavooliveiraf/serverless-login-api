@@ -1,5 +1,5 @@
 {
+  "node": true,
   "esversion": 9,
-  "asi": true,
-  "node": true
+  "asi": true
 }

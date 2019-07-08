@@ -43,7 +43,10 @@ module.exports = (sequelize, DataTypes) => {
     schema: 'security'
   });
   User.associate = function(models) {
-    // associations can be defined here
+    User.hasMany(models.Phone, {
+      foreignKey: 'userId',
+      as: 'phones'
+    })
   };
   return User;
 };

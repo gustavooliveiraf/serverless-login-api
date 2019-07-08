@@ -8,6 +8,7 @@ const generate = (guid) => {
   return jwt.sign(
     { guid },
     secret
+    // { expiresIn: constant.msInMinute * constant.limLastLogin }
   )
 }
 
