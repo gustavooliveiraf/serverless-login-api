@@ -2,7 +2,7 @@
 
 ## Routes
 
-### sign-up
+### sign-up - post
 ```json
 /user/sign-up
 {
@@ -20,12 +20,12 @@
 }
 ```
 
-### sign-in
+### sign-in - get
 ```
 /user/sign-in?email={email}&password={password}
 ```
 
-### search
+### search - get
 ```
 /user/search/:userId
 ```
