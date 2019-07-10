@@ -24,7 +24,7 @@ const create = (req, res, next) => {
 }
 
 const signIn = (req, res, next) => {
-  const payload = req.query
+  const payload = req.body
   const { error, value } = Joi.validate(payload, schema.signIn)
 
   if ( error === null ) {

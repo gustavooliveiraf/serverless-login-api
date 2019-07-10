@@ -1,17 +1,15 @@
 {
   "name": "backend-challenge-concrete",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
   "scripts": {
-    "start": "NODE_PATH=. node app.js",
-    "dev": "NODE_PATH=. NODE_ENV=development PORT=8000 SECRET=secret nodemon app.js"
+    "start": "NODE_PATH=. node server.js",
+    "dev": "NODE_PATH=. NODE_ENV=development PORT=8000 SECRET=secret BUCKET_NAME=store-gustavo BUCKET_API=http://localhost:8001 nodemon server.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/oliveiragustavo/backend-challenge-concrete.git"
   },
-  "author": "Gustavo Oliveira",
+  "author": "Gustavo Oliveira <oliveiragustavogof@gmail.com>",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/oliveiragustavo/backend-challenge-concrete/issues"
@@ -24,7 +22,10 @@
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "form-data": "^2.5.0",
     "jsonwebtoken": "^8.5.1",
+    "multer": "^1.4.1",
+    "node-fetch": "^2.6.0",
     "pg": "^7.11.0",
     "pg-hstore": "^2.3.3",
     "sequelize": "^5.9.4"

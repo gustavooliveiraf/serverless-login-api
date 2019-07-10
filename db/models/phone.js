@@ -34,7 +34,12 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DATE
     }
   }, {
-    schema: 'register'
+    schema: 'register',
+    defaultScope: {
+      attributes: {
+        exclude: ['userId', 'createdAt', 'updatedAt']
+      }
+    }
   });
   Phone.associate = function(models) {
     Phone.belongsTo(models.User, {

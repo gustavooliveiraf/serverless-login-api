@@ -1,5 +1,5 @@
 const PhoneModel = require('db/models').Phone
-const { errors, formatDate } = require('server/utils')
+const { errors } = require('server/utils')
 
 const create = async (req, res) => {
   try {
@@ -10,7 +10,11 @@ const create = async (req, res) => {
         ...i
       })
 
-      formatFieldDate(phone.dataValues)
+      delete phone.dataValues.id
+      delete phone.dataValues.userId
+      delete phone.dataValues.updatedAt
+      delete phone.dataValues.createdAt
+
       phones.push(phone)
     }
 
@@ -18,11 +22,6 @@ const create = async (req, res) => {
   } catch (err) {
     return errors.InternalServerError(res, err)
   }
-}
-
-const formatFieldDate = (user) => {
-  user.createdAt = formatDate(user.createdAt)
-  user.updatedAt = formatDate(user.updatedAt)
 }
 
 module.exports = {

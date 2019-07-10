@@ -18,7 +18,6 @@ const create = async (req, res, next) => {
       req.payload.user.dataValues.token = req.token
       formatFieldDate(req.payload.user.dataValues)
 
-
       next()
     } else {
       return errors.badRequest(res, message.emailAlreadyExists)
@@ -54,12 +53,16 @@ const signIn = async (req, res) => {
     let user = await UserModel.findOne({
       where: {
         email: req.payload.email
-      }
+      },
+      include: [{
+        model: PhoneModel,
+        as: 'phones'
+      }]
     })
 
     if (!user) {
       return errors.notAcceptable(res, message.invalidUser)
-    } else if (user && hash.compare(req.query.password, user.password)) {
+    } else if (user && hash.compare(req.body.password, user.password)) {
       let payload = await update(user.id, user.guid)
       user.dataValues.lastLogin = payload.lastLogin
       user.dataValues.token = payload.token
@@ -78,7 +81,7 @@ const signIn = async (req, res) => {
 
 const search = async (req, res) => {
   try {
-    let user = await UserModel.findOne({
+    const user = await UserModel.findOne({
       where: {
         id: req.params.userId
       }, attributes: {
@@ -105,6 +108,23 @@ const search = async (req, res) => {
   }
 }
 
+const getGuid = async (req, res, next) => {
+  try {
+    const user = await UserModel.findOne({
+      where: {
+        id: req.params.userId
+      }, attributes: ['guid']
+    })
+
+    req.payload = {}
+    req.payload.guid = user.guid
+
+    next()
+  } catch (err) {
+    return errors.InternalServerError(res, err)
+  }
+}
+
 const formatFieldDate = (user) => {
   user.createdAt = formatDate(user.createdAt)
   user.updatedAt = formatDate(user.updatedAt)
@@ -114,5 +134,6 @@ const formatFieldDate = (user) => {
 module.exports = {
   create,
   signIn,
-  search
+  search,
+  getGuid
 }

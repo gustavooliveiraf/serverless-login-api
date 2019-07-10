@@ -20,9 +20,13 @@
 }
 ```
 
-### sign-in - get
-```
-/user/sign-in?email={email}&password={password}
+### sign-in - post
+```json
+/user/sign-in
+{
+  "email": "email",
+  "password": "password"
+}
 ```
 
 ### search - get
