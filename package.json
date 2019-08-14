@@ -1,29 +1,32 @@
 {
-  "name": "backend-challenge-concrete",
+  "name": "onboarding",
   "version": "1.0.0",
   "scripts": {
     "start": "NODE_PATH=. node server.js",
-    "dev": "NODE_PATH=. NODE_ENV=development PORT=8000 SECRET=secret BUCKET_NAME=store-gustavo BUCKET_API=http://localhost:8001 nodemon server.js"
+    "dev": "cross-env NODE_PATH=. NODE_ENV=development PORT=3001 SECRET=secret BUCKET_NAME=store-gustavo BUCKET_API=http://localhost:8001 nodemon server.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/oliveiragustavo/backend-challenge-concrete.git"
+    "url": "git+https://github.com/oliveiragustavo/onboarding.git"
   },
   "author": "Gustavo Oliveira <oliveiragustavogof@gmail.com>",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/oliveiragustavo/backend-challenge-concrete/issues"
+    "url": "https://github.com/oliveiragustavo/onboarding/issues"
   },
-  "homepage": "https://github.com/oliveiragustavo/backend-challenge-concrete#readme",
+  "homepage": "https://github.com/oliveiragustavo/onboarding#readme",
   "dependencies": {
+    "@google/maps": "^0.5.5",
     "@hapi/boom": "^7.4.2",
     "@hapi/joi": "^15.1.0",
     "bcryptjs": "^2.4.3",
-    "body-parser": "^1.19.0",
-    "cors": "^2.8.5",
-    "express": "^4.17.1",
+    "cross-env": "^5.2.0",
     "form-data": "^2.5.0",
     "jsonwebtoken": "^8.5.1",
+    "koa": "^2.7.0",
+    "koa-bodyparser": "^4.2.1",
+    "koa-logger": "^3.2.1",
+    "koa-router": "^7.4.0",
     "multer": "^1.4.1",
     "node-fetch": "^2.6.0",
     "pg": "^7.11.0",
@@ -33,10 +36,6 @@
   "devDependencies": {
     "gulp": "^4.0.2",
     "gulp-cli": "^2.2.0",
-    "gulp-jshint": "^2.1.0",
-    "gulp-mocha": "^6.0.0",
-    "jshint": "^2.10.2",
-    "jshint-stylish": "^2.2.1",
     "morgan": "^1.9.1",
     "nodemon": "^1.19.1",
     "sequelize-cli": "^5.5.0"

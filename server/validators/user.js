@@ -1,9 +1,9 @@
 const { Joi, uuid, jwt, hash, errors } = require('server/utils')
 const schema = require('server/schemas/user')
 
-const create = (req, res, next) => {
-  let { password, phones, ...payload } = req.body
-  let token = jwt.generate(payload.guid)
+const create = (ctx, next) => {
+  const { password, phones, ...payload } = ctx.request.body
+  const token = jwt.generate(payload.guid)
 
   payload.guid = uuid()
   payload.token = hash.generate(token)
@@ -13,25 +13,25 @@ const create = (req, res, next) => {
   const { error, value } = Joi.validate(payload, schema.signUp)
 
   if ( error === null ) {
-    req.token = token
-    req.payload = {}
-    req.payload.user = value
+    ctx.token = token
+    ctx.payload = {}
+    ctx.payload.user = value
 
     next()
   } else {
-    return errors.badData(res, error.details)
+    return errors.badData(ctx, error.details)
   }
 }
 
-const signIn = (req, res, next) => {
-  const payload = req.body
+const signIn = (ctx, next) => {
+  const payload = ctx.request.body
   const { error, value } = Joi.validate(payload, schema.signIn)
 
   if ( error === null ) {
-    req.payload = value
+    ctx.payload = value
     next()
   } else {
-    return errors.badData(res, error.details)
+    return errors.badData(ctx, error.details)
   }
 }
 

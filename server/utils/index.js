@@ -1,5 +1,5 @@
 const uuid = require('uuid/v1')
-const jwt  = require('./jwtFuncs')
+const jwt  = require('../middlewares/jwtFuncs')
 const constant = require('./constants')
 const Joi = require('@hapi/joi')
 const hash = require('./hashFuncs')

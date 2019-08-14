@@ -1,28 +1,32 @@
 const Boom = require('@hapi/boom')
 
-const badData = (res, details) => {
-  return result(res, Boom.badData(), details)
+const badData = (ctx, details) => {
+  return result(ctx, Boom.badData(), details)
 }
 
-const InternalServerError = (res, details) => {
-  return result(res, Boom.badImplementation(), details)
+const InternalServerError = (ctx, details) => {
+  return result(ctx, Boom.badImplementation(), details)
 }
 
-const notAcceptable = (res, details) => {
-  return res.status(Boom.notAcceptable().output.statusCode).json(details)
+const notAcceptable = (ctx, details) => {
+  ctx.status = Boom.notAcceptable().output.statusCode
+  ctx.body   = details
 }
 
-const badRequest = (res, details) => {
-  return res.status(Boom.badRequest().output.statusCode).json(details)
+const badRequest = (ctx, details) => {
+  ctx.status = Boom.badRequest().output.statusCode
+  ctx.body   = details
 }
 
-const unauthorized = (res, details) => {
-  return res.status(Boom.unauthorized().output.statusCode).json(details)
+const unauthorized = (ctx, details) => {
+  ctx.status = Boom.unauthorized().output.statusCode
+  ctx.body   = details
 }
 
-const result = (res, error, details) => {
+const result = (ctx, error, details) => {
   console.log(details)
-  return res.status(error.output.statusCode).send({ ...error.output.payload, details })
+  ctx.status = error.output.statusCode
+  ctx.body   = { ...error.output.payload, details }
 }
 
 module.exports = {

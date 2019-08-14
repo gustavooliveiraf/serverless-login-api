@@ -1,11 +1,11 @@
 const PhoneModel = require('db/models').Phone
 const { errors } = require('server/utils')
 
-const create = async (req, res) => {
+const create = async ctx => {
   try {
-    let phones = []
+    const phones = []
     for (var i of req.payload.phones) {
-      let phone = await PhoneModel.create({
+      const phone = await PhoneModel.create({
         userId: req.payload.user.id,
         ...i
       })
@@ -18,9 +18,10 @@ const create = async (req, res) => {
       phones.push(phone)
     }
 
-    return res.status(201).send({ ...req.payload.user.dataValues, phones })
+    ctx.status = 201
+    ctx.body = { ...req.payload.user.dataValues, phones }
   } catch (err) {
-    return errors.InternalServerError(res, err)
+    return errors.InternalServerError(ctx, err)
   }
 }
 

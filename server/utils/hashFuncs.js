@@ -2,10 +2,14 @@ const bcrypt = require('bcryptjs')
 
 module.exports = {
   generate: str => {
-    let salt = bcrypt.genSaltSync()
-    let hash = bcrypt.hashSync(str, salt)
+    if (str) {
+      const salt = bcrypt.genSaltSync()
+      const hash = bcrypt.hashSync(str, salt)
 
-    return hash
+      return hash
+    } else {
+      return false
+    }
   },
   compare: (str, hash) => bcrypt.compareSync(str, hash)
 }

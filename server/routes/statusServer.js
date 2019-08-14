@@ -1,7 +1,8 @@
-const router = require('express').Router()
+const Router = require('koa-router');
+const router = new Router();
 
-router.get('/status', function (req, res) {
-  res.status(200).send("Service running.")
+router.get('/status', ctx => {
+  ctx.body = 'Service running.'
 })
 
 module.exports = router

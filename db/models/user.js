@@ -31,6 +31,15 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       type: DataTypes.STRING
     },
+    
+    cep: {
+      allowNull: false,
+      type: DataTypes.STRING
+    },
+    coordinate: {
+      allowNull: false,
+      type: DataTypes.GEOMETRY
+    },
     createdAt: {
       allowNull: false,
       type: DataTypes.DATE

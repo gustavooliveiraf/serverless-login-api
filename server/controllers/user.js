@@ -2,34 +2,34 @@ const UserModel = require('db/models').User
 const PhoneModel = require('db/models').Phone
 const { message, errors, jwt, hash, constant, formatDate } = require('server/utils')
 
-const create = async (req, res, next) => {
+const create = async (ctx, next) => {
   try {
-    let user = await UserModel.findOrCreate({
+    const user = await UserModel.findOrCreate({
       where: {
-        email: req.payload.user.email
+        email: ctx.payload.user.email
       }, defaults: {
-        ...req.payload.user
+        ...ctx.payload.user
       }
     })
 
     if (user[1]) {
       delete user[0].dataValues.password
-      req.payload.user = user[0]
-      req.payload.user.dataValues.token = req.token
-      formatFieldDate(req.payload.user.dataValues)
+      ctx.payload.user = user[0]
+      ctx.payload.user.dataValues.token = ctx.token
+      formatFieldDate(ctx.payload.user.dataValues)
 
       next()
     } else {
-      return errors.badRequest(res, message.emailAlreadyExists)
+      return errors.badRequest(ctx, message.emailAlreadyExists)
     }
   } catch (err) {
-    return errors.InternalServerError(res, err)
+    return errors.InternalServerError(ctx, err)
   }
 }
 
 const update = async (id, guid) => {
-  let token = jwt.generate(guid)
-  let payload = {
+  const token = jwt.generate(guid)
+  const payload = {
     token: hash.generate(token),
     lastLogin: new Date()
   }
@@ -48,11 +48,11 @@ const update = async (id, guid) => {
   }
 }
 
-const signIn = async (req, res) => {
+const signIn = async (ctx, next) => {
   try {
-    let user = await UserModel.findOne({
+    const user = await UserModel.findOne({
       where: {
-        email: req.payload.email
+        email: ctx.payload.email
       },
       include: [{
         model: PhoneModel,
@@ -61,29 +61,30 @@ const signIn = async (req, res) => {
     })
 
     if (!user) {
-      return errors.notAcceptable(res, message.invalidUser)
-    } else if (user && hash.compare(req.body.password, user.password)) {
-      let payload = await update(user.id, user.guid)
+      return errors.notAcceptable(ctx, message.invalidUser)
+    } else if (user && hash.compare(ctx.body.password, user.password)) {
+      const payload = await update(user.id, user.guid)
       user.dataValues.lastLogin = payload.lastLogin
       user.dataValues.token = payload.token
       delete user.dataValues.password
 
       formatFieldDate(user.dataValues)
 
-      return res.status(200).send(user)
+      ctx.status = 200
+      ctx.body = user
     } else {
-      return errors.unauthorized(res, message.invalidUser)
+      return errors.unauthorized(ctx, message.invalidUser)
     }
   } catch (err) {
-    return errors.InternalServerError(res, err)
+    return errors.InternalServerError(ctx, err)
   }
 }
 
-const search = async (req, res) => {
+const search = async (ctx, next) => {
   try {
     const user = await UserModel.findOne({
       where: {
-        id: req.params.userId
+        id: ctx.params.userId
       }, attributes: {
         exclude: ['password']
       },
@@ -93,35 +94,37 @@ const search = async (req, res) => {
       }]
     })
 
-    if (user && hash.compare(req.headers.authentication, user.token)) {
+    if (user && hash.compare(ctx.headers.authentication, user.token)) {
       if ((Date.now() - user.dataValues.createdAt.valueOf())/constant.msInMinute < constant.limLastLogin) {
         formatFieldDate(user.dataValues)
-        return res.status(200).send(user)
+        
+        ctx.status = 200
+        ctx.body = user
       } else {
-        return errors.unauthorized(res, message.invalidSession)
+        return errors.unauthorized(ctx, message.invalidSession)
       }
     } else {
-      return errors.unauthorized(res, message.unauthorized)
+      return errors.unauthorized(ctx, message.unauthorized)
     }
   } catch (err) {
-    return errors.InternalServerError(res, err)
+    return errors.InternalServerError(ctx, err)
   }
 }
 
-const getGuid = async (req, res, next) => {
+const getGuid = async (ctx, next) => {
   try {
     const user = await UserModel.findOne({
       where: {
-        id: req.params.userId
+        id: ctx.params.userId
       }, attributes: ['guid']
     })
 
-    req.payload = {}
-    req.payload.guid = user.guid
+    ctx.payload = {}
+    ctx.payload.guid = user.guid
 
     next()
   } catch (err) {
-    return errors.InternalServerError(res, err)
+    return errors.InternalServerError(ctx, err)
   }
 }
 
