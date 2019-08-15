@@ -14,4 +14,6 @@ router.post('/user/sign-up', userValidator.create, phoneValidator.create, getCoo
 
 router.get('/user/search/:userId', jwt.auth, userController.search)
 
+router.get('/user/list', userController.list) // tests
+
 module.exports = router

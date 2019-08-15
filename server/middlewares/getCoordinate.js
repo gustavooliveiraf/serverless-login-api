@@ -1,7 +1,8 @@
 const { errors } = require('server/utils')
+const { keyMaps } = require('config')
 
 var googleMapsClient = require('@google/maps').createClient({
-  key: 'AIzaSyAi6rkelBuQ3rDL6KJi2MnnUc3jZQMYYvo',
+  key: keyMaps,
   Promise: Promise
 })
 
@@ -11,7 +12,7 @@ const getCoordinate = async (ctx, next) => {
       address: ctx.payload.user.cep
     }).asPromise()
 
-    if (!response || response.json.results.length === 0) {
+    if (!response || response.json.results.length === 0) { // Revisar design
       throw new Error('CEP inválido.')
     }
 

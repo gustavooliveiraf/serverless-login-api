@@ -36,6 +36,12 @@ const create = async (ctx, next) => {
   }
 }
 
+const list = async ctx => {
+  const response = await UserModel.findAll()
+
+  ctx.body = response
+}
+
 const update = async (id, guid) => {
   const token = jwt.generate(guid)
   const payload = {
@@ -147,5 +153,6 @@ module.exports = {
   create,
   signIn,
   search,
-  getGuid
+  getGuid,
+  list
 }
