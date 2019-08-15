@@ -24,7 +24,8 @@ const unauthorized = (ctx, details) => {
 }
 
 const result = (ctx, error, details) => {
-  console.log(details)
+  details = details.message || details
+  console.log(details) // Logstash?!!
   ctx.status = error.output.statusCode
   ctx.body   = { ...error.output.payload, details }
 }

@@ -20,7 +20,7 @@ module.exports = {
           as: 'user',
         }
       },
-      numero: {
+      number: {
         type: Sequelize.BIGINT
       },
       ddd: {

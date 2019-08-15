@@ -16,9 +16,18 @@ const create = async (ctx, next) => {
       delete user[0].dataValues.password
       ctx.payload.user = user[0]
       ctx.payload.user.dataValues.token = ctx.token
+      ctx.payload.user.dataValues.geolocation = {
+        type: "Point",
+        coordinates: [
+          ctx.payload.user.dataValues.lat,
+          ctx.payload.user.dataValues.lng
+        ]
+      }
+      delete ctx.payload.user.dataValues.lat
+      delete ctx.payload.user.dataValues.lng
       formatFieldDate(ctx.payload.user.dataValues)
 
-      next()
+      await next()
     } else {
       return errors.badRequest(ctx, message.emailAlreadyExists)
     }

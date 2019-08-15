@@ -10,10 +10,10 @@
   "email": "email@gmail.com",
   "password": "password",
   "phones": [{
-      "numero": "123456789",
+      "number": "123456789",
       "ddd": "11"
     }, {
-      "numero": "012345678",
+      "number": "012345678",
       "ddd": "22"
     }
   ]

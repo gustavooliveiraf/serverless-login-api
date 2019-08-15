@@ -1,7 +1,7 @@
 const { Joi, uuid, jwt, hash, errors } = require('server/utils')
 const schema = require('server/schemas/user')
 
-const create = (ctx, next) => {
+const create = async (ctx, next) => {
   const { password, phones, ...payload } = ctx.request.body
   const token = jwt.generate(payload.guid)
 
@@ -17,7 +17,7 @@ const create = (ctx, next) => {
     ctx.payload = {}
     ctx.payload.user = value
 
-    next()
+    await next()
   } else {
     return errors.badData(ctx, error.details)
   }

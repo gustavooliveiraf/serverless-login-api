@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "start": "NODE_PATH=. node server.js",
-    "dev": "cross-env NODE_PATH=. NODE_ENV=development PORT=3001 SECRET=secret BUCKET_NAME=store-gustavo BUCKET_API=http://localhost:8001 nodemon server.js"
+    "dev": "cross-env NODE_PATH=. NODE_ENV=production PORT=3000 SECRET=secret BUCKET_NAME=store-gustavo BUCKET_API=http://localhost:8001 nodemon server.js"
   },
   "repository": {
     "type": "git",

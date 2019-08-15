@@ -4,9 +4,9 @@ const { errors } = require('server/utils')
 const create = async ctx => {
   try {
     const phones = []
-    for (var i of req.payload.phones) {
+    for (var i of ctx.payload.phones) {
       const phone = await PhoneModel.create({
-        userId: req.payload.user.id,
+        userId: ctx.payload.user.id,
         ...i
       })
 
@@ -19,7 +19,7 @@ const create = async ctx => {
     }
 
     ctx.status = 201
-    ctx.body = { ...req.payload.user.dataValues, phones }
+    ctx.body = { ...ctx.payload.user.dataValues, phones }
   } catch (err) {
     return errors.InternalServerError(ctx, err)
   }

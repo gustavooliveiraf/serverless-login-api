@@ -1,3 +1,5 @@
+const { errors } = require('server/utils')
+
 var googleMapsClient = require('@google/maps').createClient({
   key: 'AIzaSyAi6rkelBuQ3rDL6KJi2MnnUc3jZQMYYvo',
   Promise: Promise
@@ -9,11 +11,16 @@ const getCoordinate = async (ctx, next) => {
       address: ctx.payload.user.cep
     }).asPromise()
 
-    const coordinate = [response.json.results[0].geometry.location.lat, response.json.results[0].geometry.location.lng]
-    ctx.payload.user.coordinate = coordinate
-    next()
+    if (!response || response.json.results.length === 0) {
+      throw new Error('CEP inválido.')
+    }
+
+    ctx.payload.user.lat = response.json.results[0].geometry.location.lat
+    ctx.payload.user.lng = response.json.results[0].geometry.location.lng
+
+    await next()
   } catch (err) {
-    console.log(err)
+    return errors.badData(ctx, err)
   }
 }
 

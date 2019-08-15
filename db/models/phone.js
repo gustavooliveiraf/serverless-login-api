@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
         as: 'user',
       }
     },
-    numero: {
+    number: {
       type: DataTypes.BIGINT
     },
     ddd: {
