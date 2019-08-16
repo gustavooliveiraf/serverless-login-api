@@ -7,6 +7,8 @@ const errors = require('../utils/errors')
 const offset = 'Bearer'.length + 1
 
 const generate = (guid) => {
+  console.log(guid)
+  console.log(guid)
   return jwt.sign(
     { guid },
     secret
@@ -16,7 +18,7 @@ const generate = (guid) => {
 
 const auth = async (ctx, next) => {
   try {
-    ctx.headers.authentication = req.headers.authentication.substr(offset)
+    ctx.headers.authentication = ctx.headers.authentication.substr(offset)
     jwt.verify(ctx.headers.authentication, secret)
 
     next()

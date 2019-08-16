@@ -2,8 +2,9 @@
   "name": "login-api",
   "version": "1.0.0",
   "scripts": {
-    "start": "NODE_PATH=. node server.js",
-    "dev": "cross-env NODE_PATH=. NODE_ENV=development PORT=3000 SECRET=secret BUCKET_NAME=store-gustavo BUCKET_API=http://localhost:8001 KEY_MAPS=AIzaSyAi6rkelBuQ3rDL6KJi2MnnUc3jZQMYYvo nodemon server.js",
+    "teste": "cross-env NODE_PATH=. node teste.js",
+    "start": "NODE_PATH=. node start.js",
+    "dev": "cross-env NODE_PATH=. NODE_ENV=development PORT=3000 SECRET=secret BUCKET_NAME=store-gustavo BUCKET_API=http://localhost:8001 KEY_MAPS=AIzaSyAi6rkelBuQ3rDL6KJi2MnnUc3jZQMYYvo nodemon start.js",
     "test": "jest",
     "test:coverage": "jest --coverage",
     "test:watch": "jest --watch"

@@ -109,6 +109,10 @@ const search = async (ctx, next) => {
       }]
     })
 
+    console.log(ctx.headers.authentication)
+    console.log(`-----------`)
+    console.log(user.dataValues)
+
     if (user && hash.compare(ctx.headers.authentication, user.token)) {
       if ((Date.now() - user.dataValues.createdAt.valueOf())/constant.msInMinute < constant.limLastLogin) {
         formatFieldDate(user.dataValues)
