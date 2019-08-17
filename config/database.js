@@ -1,9 +1,9 @@
 module.exports = { // apply dotenv
   development: {
     username: "postgres",
-    password: "docker",
-    database: "postgres2",
-    host: "127.0.0.1",
+    password: "123456",
+    database: "developmentConcrete",
+    host: "192.168.1.6",
     port: 5432,
     dialect: "postgres"
   },
