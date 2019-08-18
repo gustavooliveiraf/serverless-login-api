@@ -3,7 +3,7 @@ WORKDIR /api
 COPY ./package*.json ./
 RUN npm install --only=production
 COPY . .
-ARG PORT=8000
+ARG PORT=3000
 ENV PORT $PORT
 ENV SECRET secret
 ENV NODE_ENV development
