@@ -12,7 +12,7 @@ router.post('/user/sign-up', userValidator.create, phoneValidator.create, getCoo
                              userController.create, phoneController.create)
       .post('/user/sign-in', userValidator.signIn, userController.signIn)
 
-router.get('/user/search/:userId', jwt.auth, userController.search)
+router.get('/user/search/:guid', jwt.auth, userController.search)
 
 router.get('/user/list', userController.list) // tests
 

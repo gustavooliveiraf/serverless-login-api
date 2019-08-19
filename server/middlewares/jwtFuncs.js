@@ -6,9 +6,9 @@ const errors = require('../utils/errors')
 
 const offset = 'Bearer'.length + 1
 
-const generate = (guid) => {
+const generate = (payload) => {
   return jwt.sign(
-    { guid },
+    { payload },
     secret
     // { expiresIn: constant.msInMinute * constant.limLastLogin }
   )
@@ -16,10 +16,10 @@ const generate = (guid) => {
 
 const auth = async (ctx, next) => {
   try {
-    ctx.headers.authentication = req.headers.authentication.substr(offset)
+    ctx.headers.authentication = ctx.headers.authentication.substr(offset)
     jwt.verify(ctx.headers.authentication, secret)
 
-    next()
+    await next()
   } catch (err) {
     return errors.unauthorized(ctx, message.unauthorized)
   }

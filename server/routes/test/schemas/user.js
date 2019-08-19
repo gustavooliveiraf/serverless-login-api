@@ -1,12 +1,6 @@
 const { Joi, constant, minDomainSegments } = require('server/utils')
 
 module.exports = {
-  userBody: Joi.object().keys({
-    name: Joi.string().max(constant.maxString).required(),
-    email: Joi.string().email({ minDomainSegments }).lowercase().required(),
-    password: Joi.string().max(constant.maxString).required(),
-    cep: Joi.string().max(constant.maxString).required()
-  }),
   userModel: Joi.object().keys({
     name: Joi.string().max(constant.maxString).required(),
     email: Joi.string().email({ minDomainSegments }).lowercase().required(),
@@ -14,9 +8,5 @@ module.exports = {
     guid: Joi.string().max(constant.maxString).required(),
     lastLogin: Joi.date().required(),
     cep: Joi.string().max(constant.maxString).required()
-  }),
-  signIn: Joi.object().keys({
-    email: Joi.string().email({ minDomainSegments }).lowercase().required(),
-    password: Joi.string().max(constant.maxString).required(),
   })
 }

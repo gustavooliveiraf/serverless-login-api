@@ -1,37 +1,48 @@
-const { Joi, uuid, jwt, hash, errors } = require('server/utils')
+const { Joi, uuid, hash, errors, CustomError } = require('server/utils')
 const schema = require('server/schemas/user')
 
 const create = async (ctx, next) => {
-  const { password, phones, ...payload } = ctx.request.body
-  const token = jwt.generate(payload.guid)
+  try {
+    const { phones, ...payload } = ctx.request.body
 
-  payload.guid = uuid()
-  payload.token = hash.generate(token)
-  payload.password = hash.generate(password)
-  payload.lastLogin = new Date()
+    let { error, value } = Joi.validate(payload, schema.userBody)
 
-  const { error, value } = Joi.validate(payload, schema.signUp)
+    if ( error === null ) {
+      value.guid = uuid()
+      value.password = hash.generate(value.password)
+      value.lastLogin = new Date()
 
-  if ( error === null ) {
-    ctx.token = token
-    ctx.payload = {}
-    ctx.payload.user = value
+      const { error, ...payload } = Joi.validate(value, schema.userModel)
 
-    await next()
-  } else {
-    return errors.badData(ctx, error.details)
+      if (error === null) {
+        ctx.payload = {}
+        ctx.payload.user = payload.value
+
+        return await next(payload.value)
+      } else {
+        throw new CustomError(error.details)
+      }
+    } else {
+      throw new CustomError(error.details)
+    }
+  } catch (err) {
+    return errors.badData(ctx, err)
   }
 }
 
-const signIn = (ctx, next) => {
+const signIn = async (ctx, next) => {
   const payload = ctx.request.body
   const { error, value } = Joi.validate(payload, schema.signIn)
 
-  if ( error === null ) {
-    ctx.payload = value
-    next()
-  } else {
-    return errors.badData(ctx, error.details)
+  try {
+    if ( error === null ) {
+      ctx.payload = value
+      await next()
+    } else {
+      throw new CustomError(error.details)
+    }
+  } catch (err) {
+    return errors.badData(ctx, err)
   }
 }
 

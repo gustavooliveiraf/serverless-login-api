@@ -1,23 +1,17 @@
-const UserModel = require('db/models').User
-const PhoneModel = require('db/models').Phone
 const { message, errors, jwt, hash, constant, formatDate } = require('server/utils')
+const userRepository = require('../repositories/user')
 
 const create = async (ctx, next) => {
   try {
-    const user = await UserModel.findOrCreate({
-      where: {
-        email: ctx.payload.user.email
-      }, defaults: {
-        ...ctx.payload.user
-      }
-    })
+    const token = jwt.generate(ctx.payload.user.email)
+    const user = await userRepository.create(ctx, token)
 
     if (user[1]) {
       delete user[0].dataValues.password
       ctx.payload.user = user[0]
-      ctx.payload.user.dataValues.token = ctx.token
+      ctx.payload.user.dataValues.token = token
       ctx.payload.user.dataValues.geolocation = {
-        type: "Point",
+        type: 'Point',
         coordinates: [
           ctx.payload.user.dataValues.lat,
           ctx.payload.user.dataValues.lng
@@ -37,50 +31,22 @@ const create = async (ctx, next) => {
 }
 
 const list = async ctx => {
-  const response = await UserModel.findAll()
+  const response = await userRepository.findAll()
 
   ctx.body = response
 }
 
-const update = async (id, guid) => {
-  const token = jwt.generate(guid)
-  const payload = {
-    token: hash.generate(token),
-    lastLogin: new Date()
-  }
-
-  await UserModel.update({
-    ...payload
-  }, {
-    where: {
-      id
-    }
-  })
-
-  return  {
-    token,
-    lastLogin: payload.lastLogin
-  }
-}
-
 const signIn = async (ctx, next) => {
   try {
-    const user = await UserModel.findOne({
-      where: {
-        email: ctx.payload.email
-      },
-      include: [{
-        model: PhoneModel,
-        as: 'phones'
-      }]
-    })
+    const user = await userRepository.findOne(ctx)
 
     if (!user) {
       return errors.notAcceptable(ctx, message.invalidUser)
-    } else if (user && hash.compare(ctx.body.password, user.password)) {
-      const payload = await update(user.id, user.guid)
+    } else if (user && hash.compare(ctx.payload.password, user.password)) {
+      const payload = await userRepository.update(user.id, user.guid)
       user.dataValues.lastLogin = payload.lastLogin
       user.dataValues.token = payload.token
+      delete user.dataValues.id
       delete user.dataValues.password
 
       formatFieldDate(user.dataValues)
@@ -97,17 +63,8 @@ const signIn = async (ctx, next) => {
 
 const search = async (ctx, next) => {
   try {
-    const user = await UserModel.findOne({
-      where: {
-        id: ctx.params.userId
-      }, attributes: {
-        exclude: ['password']
-      },
-      include: [{
-        model: PhoneModel,
-        as: 'phones'
-      }]
-    })
+    const user = await userRepository.findOne(ctx)
+    delete user.dataValues.id
 
     if (user && hash.compare(ctx.headers.authentication, user.token)) {
       if ((Date.now() - user.dataValues.createdAt.valueOf())/constant.msInMinute < constant.limLastLogin) {
@@ -126,23 +83,6 @@ const search = async (ctx, next) => {
   }
 }
 
-const getGuid = async (ctx, next) => {
-  try {
-    const user = await UserModel.findOne({
-      where: {
-        id: ctx.params.userId
-      }, attributes: ['guid']
-    })
-
-    ctx.payload = {}
-    ctx.payload.guid = user.guid
-
-    next()
-  } catch (err) {
-    return errors.InternalServerError(ctx, err)
-  }
-}
-
 const formatFieldDate = (user) => {
   user.createdAt = formatDate(user.createdAt)
   user.updatedAt = formatDate(user.updatedAt)
@@ -153,6 +93,5 @@ module.exports = {
   create,
   signIn,
   search,
-  getGuid,
   list
 }

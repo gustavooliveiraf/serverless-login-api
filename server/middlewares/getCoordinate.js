@@ -1,23 +1,17 @@
+const fetch = require('node-fetch')
 const { errors } = require('server/utils')
 const { keyMaps } = require('config')
 
-var googleMapsClient = require('@google/maps').createClient({
-  key: keyMaps,
-  Promise: Promise
-})
-
 const getCoordinate = async (ctx, next) => {
   try {
-    const response = await googleMapsClient.geocode({
-      address: ctx.payload.user.cep
-    }).asPromise()
+    const response = await (await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${ctx.payload.user.cep}&key=${keyMaps}`)).json()
 
-    if (!response || response.json.results.length === 0) { // Revisar design
+    if (!response || response.results.length === 0) { // Revisar design
       throw new Error('CEP inválido.')
     }
 
-    ctx.payload.user.lat = response.json.results[0].geometry.location.lat
-    ctx.payload.user.lng = response.json.results[0].geometry.location.lng
+    ctx.payload.user.lat = response.results[0].geometry.location.lat
+    ctx.payload.user.lng = response.results[0].geometry.location.lng
 
     await next()
   } catch (err) {

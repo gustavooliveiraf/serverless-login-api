@@ -6,6 +6,7 @@ const hash = require('./hashFuncs')
 const message = require('./staticMessages')
 const errors = require('./errors')
 const formatDate = require('./formatDate')
+const CustomError = require('./CustomError')
 
 module.exports = {
   uuid,
@@ -15,5 +16,6 @@ module.exports = {
   hash,
   message,
   errors,
-  formatDate
+  formatDate,
+  CustomError
 }
