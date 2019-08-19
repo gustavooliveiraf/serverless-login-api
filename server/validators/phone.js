@@ -9,7 +9,7 @@ const create = async (ctx, next) => {
 
     if ( error === null ) {
       ctx.payload.phones = value || []
-      await next()
+      return await next(value)
     } else {
       throw new CustomError(error.details)
     }

@@ -4,9 +4,8 @@
   // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
   "version": "0.2.0",
   "configurations": [
-
     {
-      "name": "Launch Program",
+      "name": "Default",
       "type": "node",
       "request": "launch",
       "runtimeExecutable": "nodemon",
@@ -20,6 +19,20 @@
         "SECRET": "secret",
         "KEY_MAPS": "AIzaSyAi6rkelBuQ3rDL6KJi2MnnUc3jZQMYYvo"
       }
+    },
+    {
+      "name": "Jest",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/node_modules/jest/bin/jest",
+      "console": "integratedTerminal",
+      "env": {
+        "NODE_PATH": ".",
+        "NODE_ENV": "development",
+        "PORT": "3000",
+        "SECRET": "secret",
+        "KEY_MAPS": "AIzaSyAi6rkelBuQ3rDL6KJi2MnnUc3jZQMYYvo"
+      }
     }
   ]
-}
+},

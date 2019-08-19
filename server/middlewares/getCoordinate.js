@@ -13,7 +13,7 @@ const getCoordinate = async (ctx, next) => {
     ctx.payload.user.lat = response.results[0].geometry.location.lat
     ctx.payload.user.lng = response.results[0].geometry.location.lng
 
-    await next()
+    return await next({ lat: ctx.payload.user.lat, lng: ctx.payload.user.lng })
   } catch (err) {
     return errors.badData(ctx, err)
   }
