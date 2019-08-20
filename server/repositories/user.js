@@ -1,6 +1,6 @@
 const UserModel = require('db/models').User
 const PhoneModel = require('db/models').Phone
-const { message, errors, jwt, hash, constant } = require('server/utils')
+const { message, errors, jwtGenerate, hash, constant } = require('server/utils')
 
 const create = async (ctx, token) => {
   try {
@@ -28,7 +28,7 @@ const list = async ctx => {
 }
 
 const update = async (id, guid) => {
-  const token = jwt.generate(guid)
+  const token = jwtGenerate(guid)
   const payload = {
     token: hash.generate(token),
     lastLogin: new Date()

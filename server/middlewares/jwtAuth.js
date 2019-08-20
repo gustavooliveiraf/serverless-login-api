@@ -6,14 +6,6 @@ const errors = require('../utils/errors')
 
 const offset = 'Bearer'.length + 1
 
-const generate = (payload) => {
-  return jwt.sign(
-    { payload },
-    secret
-    // { expiresIn: constant.msInMinute * constant.limLastLogin }
-  )
-}
-
 const auth = async (ctx, next) => {
   try {
     ctx.headers.authentication = ctx.headers.authentication.substr(offset)
@@ -25,7 +17,4 @@ const auth = async (ctx, next) => {
   }
 }
 
-module.exports = {
-  generate,
-  auth
-}
+module.exports = auth

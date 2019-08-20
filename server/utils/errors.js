@@ -24,12 +24,14 @@ const unauthorized = (ctx, details) => {
 const resultWarning = (ctx, details, statusCode) => {
   ctx.status = statusCode
   ctx.body   = details
+  return details
 }
 
 const resultError = (ctx, err, statusCode) => {
   console.log(err) // Logstash?!!
   ctx.status = statusCode
   ctx.body   = err instanceof CustomError ? err.err : err.message
+  return err
 }
 
 module.exports = {

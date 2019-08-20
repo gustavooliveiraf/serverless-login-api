@@ -2,11 +2,10 @@
   "name": "login-api",
   "version": "1.0.0",
   "scripts": {
-    "teste": "cross-env NODE_PATH=. node teste.js",
     "start": "NODE_PATH=. node start.js",
-    "dev": "cross-env NODE_PATH=. NODE_ENV=development PORT=3000 SECRET=secret BUCKET_NAME=store-gustavo BUCKET_API=http://localhost:8001 KEY_MAPS=AIzaSyAi6rkelBuQ3rDL6KJi2MnnUc3jZQMYYvo nodemon start.js",
-    "test": "cross-env NODE_PATH=. jest",
-    "test:coverage": "cross-env NODE_PATH=. jest --coverage"
+    "dev": "cross-env NODE_PATH=. NODE_ENV=development PORT=3000 SECRET=secret KEY_MAPS=AIzaSyAi6rkelBuQ3rDL6KJi2MnnUc3jZQMYYvo BUCKET_NAME=store-gustavo BUCKET_API=http://localhost:8001 nodemon start.js",
+    "test": "cross-env NODE_PATH=. NODE_ENV=development PORT=3000 SECRET=secret KEY_MAPS=AIzaSyAi6rkelBuQ3rDL6KJi2MnnUc3jZQMYYvo jest",
+    "test:coverage": "cross-env NODE_PATH=. NODE_ENV=development PORT=3000 SECRET=secret KEY_MAPS=AIzaSyAi6rkelBuQ3rDL6KJi2MnnUc3jZQMYYvo jest --coverage"
   },
   "repository": {
     "type": "git",

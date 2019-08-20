@@ -1,5 +1,5 @@
 const uuid = require('uuid/v1')
-const jwt  = require('../middlewares/jwtFuncs')
+const jwtGenerate  = require('./jwtGenerate')
 const constant = require('./constants')
 const Joi = require('@hapi/joi')
 const hash = require('./hashFuncs')
@@ -10,7 +10,7 @@ const CustomError = require('./CustomError')
 
 module.exports = {
   uuid,
-  jwt,
+  jwtGenerate,
   constant,
   Joi,
   hash,

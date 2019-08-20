@@ -1,6 +1,6 @@
 const Router = require('koa-router');
 const router = new Router();
-const { jwt } = require('server/utils')
+const jwtAuth = require('server/middlewares/jwtAuth')
 
 const userValidator = require('server/validators/user')
 const userController = require('server/controllers/user')
@@ -12,7 +12,7 @@ router.post('/user/sign-up', userValidator.create, phoneValidator.create, getCoo
                              userController.create, phoneController.create)
       .post('/user/sign-in', userValidator.signIn, userController.signIn)
 
-router.get('/user/search/:guid', jwt.auth, userController.search)
+router.get('/user/search/:guid', jwtAuth, userController.search)
 
 router.get('/user/list', userController.list) // tests
 

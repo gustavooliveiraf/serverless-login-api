@@ -1,9 +1,9 @@
-const { message, errors, jwt, hash, constant, formatDate } = require('server/utils')
+const { message, errors, jwtGenerate, hash, constant, formatDate } = require('server/utils')
 const userRepository = require('../repositories/user')
 
 const create = async (ctx, next) => {
   try {
-    const token = jwt.generate(ctx.payload.user.email)
+    const token = jwtGenerate(ctx.payload.user.email)
     const user = await userRepository.create(ctx, token)
 
     if (user[1]) {
