@@ -1,4 +1,5 @@
 const { Joi, constant, minDomainSegments } = require('server/utils')
+const phones = require('./phone')
 
 const userValidatorSchema = Joi.object().keys({
   name: Joi.string().max(constant.maxString).required(),
@@ -10,6 +11,7 @@ const userValidatorSchema = Joi.object().keys({
 })
 
 const userControllerSchema = Joi.object().keys({
+  id: Joi.number().required(),
   name: Joi.string().max(constant.maxString).required(),
   email: Joi.string().email({ minDomainSegments }).lowercase().required(),
   guid: Joi.string().max(constant.maxString).required(),
@@ -21,7 +23,8 @@ const userControllerSchema = Joi.object().keys({
   geolocation: Joi.object().keys({
     type: Joi.string().max(constant.maxString).required(),
     coordinates: Joi.array().items(Joi.number())
-  })
+  }),
+  phones
 })
 
 module.exports = {

@@ -31,7 +31,8 @@
     "node-fetch": "^2.6.0",
     "pg": "^7.11.0",
     "pg-hstore": "^2.3.3",
-    "sequelize": "^5.9.4"
+    "sequelize": "^5.9.4",
+    "supertest": "^4.0.2"
   },
   "devDependencies": {
     "cross-env": "^5.2.0",

@@ -1,8 +1,7 @@
 const { Joi } = require('server/utils')
-const { userValidatorSchema } = require('../../schemas/user')
 
 const userValidator = require('server/validators/user')
-const phoneValidator = require('server/validators/phone')
+const { userValidatorSchema } = require('../../schemas/user')
 
 // ========================= payloads =========================
 const body = {

@@ -5,6 +5,7 @@ const { userControllerSchema } = require('../../schemas/user')
 // ========================= payloads =========================
 const payload = {}
 payload.user = {
+  id: 1,
   name: 'gustavo',
   email: 'gof@cin.ufpe.br',
   password: '123',

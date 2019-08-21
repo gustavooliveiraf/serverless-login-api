@@ -33,10 +33,12 @@ const create = userRepository => {
   }
 }
 
-const list = async ctx => {
-  const response = await userRepository.findAll()
+const findAll = userRepository => {
+  return async (ctx, next) => {
+    const response = await userRepository.findAll()
 
-  ctx.body = response
+    ctx.body = response
+  }
 }
 
 const signIn = async (ctx, next) => {
@@ -96,5 +98,5 @@ module.exports = {
   create,
   signIn,
   search,
-  list
+  findAll
 }

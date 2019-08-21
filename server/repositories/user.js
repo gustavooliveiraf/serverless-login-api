@@ -19,7 +19,7 @@ const create = async (ctx, token) => {
   }
 }
 
-const list = async ctx => {
+const findAll = async ctx => {
   try {
     return await UserModel.findAll()
   } catch (err) {
@@ -133,6 +133,6 @@ module.exports = {
   create,
   signIn,
   search,
-  list,
-  findOne
+  findOne,
+  findAll
 }
