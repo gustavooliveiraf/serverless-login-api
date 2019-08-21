@@ -1,23 +1,21 @@
-const phoneRepository = require('../repositories/phone')
 const { errors } = require('server/utils')
 
-const create = async ctx => {
-  try {
-    const phones = await Promise.all(ctx.payload.phones.map( async elem => {
-      const phone = await phoneRepository.create(ctx, elem)
+const create = phoneRepository => {
+  return async ctx => {
+    try {
+      const phones = await Promise.all(ctx.payload.phones.map( async elem => {
+        const phone = await phoneRepository.create(ctx, elem)
 
-      delete phone.dataValues.id
-      delete phone.dataValues.userId
-      delete phone.dataValues.updatedAt
-      delete phone.dataValues.createdAt
+        const { number, ddd } = phone.dataValues
 
-      return phone
-    }))
+        return { number, ddd }
+      }))
 
-    ctx.status = 201
-    ctx.body = { ...ctx.payload.user, phones }
-  } catch (err) {
-    return errors.InternalServerError(ctx, err)
+      ctx.status = 201
+      return ctx.body = { ...ctx.payload.user, phones }
+    } catch (err) {
+      return errors.InternalServerError(ctx, err)
+    }
   }
 }
 

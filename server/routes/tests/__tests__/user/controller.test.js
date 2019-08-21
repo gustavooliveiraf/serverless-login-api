@@ -45,5 +45,16 @@ describe('user', () => {
         expect(error).toBeNull();
       })
     })
+
+    describe('Error', () => {
+      test('create', async () => {
+        payload.user.lat = 'a' // to be false
+        const checkPayload = await userController.create(userRepository)({ payload }, next)
+
+        const { error, value } = Joi.validate(checkPayload, userControllerSchema)
+
+        expect(error).not.toBeNull();
+      })
+    })
   })
 })
