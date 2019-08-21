@@ -1,32 +1,35 @@
 const { message, errors, jwtGenerate, hash, constant, formatDate } = require('server/utils')
-const userRepository = require('../repositories/user')
 
-const create = async (ctx, next) => {
-  try {
-    const token = jwtGenerate(ctx.payload.user.email)
-    const user = await userRepository.create(ctx, token)
+const create = userRepository => {
+  return async (ctx, next) => {
+    try {
+      const token = jwtGenerate(ctx.payload.user.email)
+      let user = await userRepository.create(ctx, token)
 
-    if (user[1]) {
-      delete user[0].dataValues.password
-      ctx.payload.user = user[0]
-      ctx.payload.user.dataValues.token = token
-      ctx.payload.user.dataValues.geolocation = {
-        type: 'Point',
-        coordinates: [
-          ctx.payload.user.dataValues.lat,
-          ctx.payload.user.dataValues.lng
-        ]
+      if (user[1]) {
+        user = user[0].dataValues
+        delete user.password
+        ctx.payload.user = user
+        ctx.payload.user.token = token
+        ctx.payload.user.geolocation = {
+          type: 'Point',
+          coordinates: [
+            ctx.payload.user.lat,
+            ctx.payload.user.lng
+          ]
+        }
+        delete ctx.payload.user.password
+        delete ctx.payload.user.lat
+        delete ctx.payload.user.lng
+        formatFieldDate(ctx.payload.user)
+
+        return await next(ctx.payload.user)
+      } else {
+        return errors.badRequest(ctx, message.emailAlreadyExists)
       }
-      delete ctx.payload.user.dataValues.lat
-      delete ctx.payload.user.dataValues.lng
-      formatFieldDate(ctx.payload.user.dataValues)
-
-      await next()
-    } else {
-      return errors.badRequest(ctx, message.emailAlreadyExists)
+    } catch (err) {
+      return errors.InternalServerError(ctx, err)
     }
-  } catch (err) {
-    return errors.InternalServerError(ctx, err)
   }
 }
 

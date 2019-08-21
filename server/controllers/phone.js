@@ -15,7 +15,7 @@ const create = async ctx => {
     }))
 
     ctx.status = 201
-    ctx.body = { ...ctx.payload.user.dataValues, phones }
+    ctx.body = { ...ctx.payload.user, phones }
   } catch (err) {
     return errors.InternalServerError(ctx, err)
   }

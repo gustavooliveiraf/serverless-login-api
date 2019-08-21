@@ -1,4 +1,5 @@
-
+const jwt  = require('jsonwebtoken')
+const { secret } = require('config')
 
 const generate = (payload) => {
   return jwt.sign(
