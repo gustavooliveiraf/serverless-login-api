@@ -10,6 +10,7 @@ const create = phoneRepository => {
 
         return { number, ddd }
       }))
+      delete ctx.payload.user.id
 
       ctx.status = 201
       return ctx.body = { ...ctx.payload.user, phones }

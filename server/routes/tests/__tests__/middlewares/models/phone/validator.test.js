@@ -1,33 +1,24 @@
 const { Joi } = require('server/utils')
 
 const phoneValidator = require('server/validators/phone')
-const phonesValidatorSchema = require('../../schemas/phone')
+const phonesValidatorSchema = require('server/routes/tests/schemas/phone')
 
 // ========================= payloads =========================
-const body = {
-  name: 'gustavo',
-  email: 'gof@cin.ufpe.br',
-  password: '123',
-  cep: '57041-100'
-}
-
-const phones = [{
-    number: '123455678',
-    ddd: '81'
-  }, {
-    number: '1234556780',
-    ddd: '82'
+const payload = {
+  payload: {},
+  request: {
+    body: {
+      phones: [{
+          number: '123455678',
+          ddd: '81'
+        }, {
+          number: '1234556780',
+          ddd: '82'
+        }
+      ]
+    }
   }
-]
-
-const payload = {}
-payload.payload = {}
-
-payload.request = {}
-payload.request.body = body
-payload.request.body.phones = phones
-
-payload.user = body
+}
 
 // ========================= auxiliary functions =========================
 const next = (value) => {

@@ -8,20 +8,9 @@ const create = userRepository => {
 
       if (user[1]) {
         user = user[0].dataValues
-        delete user.password
         ctx.payload.user = user
-        ctx.payload.user.token = token
-        ctx.payload.user.geolocation = {
-          type: 'Point',
-          coordinates: [
-            ctx.payload.user.lat,
-            ctx.payload.user.lng
-          ]
-        }
-        delete ctx.payload.user.password
-        delete ctx.payload.user.lat
-        delete ctx.payload.user.lng
-        formatFieldDate(ctx.payload.user)
+
+        formatUser(ctx.payload.user, token)
 
         return await next(ctx.payload.user)
       } else {
@@ -41,34 +30,34 @@ const findAll = userRepository => {
   }
 }
 
-const signIn = async (ctx, next) => {
-  try {
-    const user = await userRepository.findOne(ctx)
+const signIn = userRepository => {
+  return async (ctx, next) => {
+    try {
+      let user = await userRepository.findByEmail(ctx)
 
-    if (!user) {
-      return errors.notAcceptable(ctx, message.invalidUser)
-    } else if (user && hash.compare(ctx.payload.password, user.password)) {
-      const payload = await userRepository.update(user.id, user.guid)
-      user.dataValues.lastLogin = payload.lastLogin
-      user.dataValues.token = payload.token
-      delete user.dataValues.id
-      delete user.dataValues.password
+      if (!user) {
+        return errors.notAcceptable(ctx, message.invalidUser)
+      } else if (user && hash.compare(ctx.payload.password, user.dataValues.password)) {
+        user = user.dataValues
 
-      formatFieldDate(user.dataValues)
+        const payload = await userRepository.update(user.id, user.guid)
 
-      ctx.status = 200
-      ctx.body = user
-    } else {
-      return errors.unauthorized(ctx, message.invalidUser)
+        formatUser(user, payload.token, payload.lastLogin)
+
+        ctx.status = 200
+        return ctx.body = user
+      } else {
+        return errors.unauthorized(ctx, message.invalidUser)
+      }
+    } catch (err) {
+      return errors.InternalServerError(ctx, err)
     }
-  } catch (err) {
-    return errors.InternalServerError(ctx, err)
   }
 }
 
 const search = async (ctx, next) => {
   try {
-    const user = await userRepository.findOne(ctx)
+    const user = await userRepository.findByGuid(ctx)
     delete user.dataValues.id
 
     if (user && hash.compare(ctx.headers.authentication, user.token)) {
@@ -76,7 +65,7 @@ const search = async (ctx, next) => {
         formatFieldDate(user.dataValues)
         
         ctx.status = 200
-        ctx.body = user
+        return ctx.body = user
       } else {
         return errors.unauthorized(ctx, message.invalidSession)
       }
@@ -86,6 +75,29 @@ const search = async (ctx, next) => {
   } catch (err) {
     return errors.InternalServerError(ctx, err)
   }
+}
+
+const formatUser = (user, token, lastLogin) => {
+  user.token = token
+
+  user.geolocation = {
+    type: 'Point',
+    coordinates: [
+      user.lat,
+      user.lng
+    ]
+  }
+
+  delete user.lat
+  delete user.lng
+  delete user.password
+
+  if (lastLogin) { // signIn
+    user.lastLogin = lastLogin
+    delete user.id
+  }
+
+  formatFieldDate(user)
 }
 
 const formatFieldDate = (user) => {

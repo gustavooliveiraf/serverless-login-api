@@ -11,7 +11,6 @@ const userValidatorSchema = Joi.object().keys({
 })
 
 const userControllerSchema = Joi.object().keys({
-  id: Joi.number().required(),
   name: Joi.string().max(constant.maxString).required(),
   email: Joi.string().email({ minDomainSegments }).lowercase().required(),
   guid: Joi.string().max(constant.maxString).required(),
@@ -27,7 +26,13 @@ const userControllerSchema = Joi.object().keys({
   phones
 })
 
+const userValidatorSchemaSignIn = Joi.object().keys({
+  email: Joi.string().email({ minDomainSegments }).lowercase().required(),
+  password: Joi.string().max(constant.maxString).required()
+})
+
 module.exports = {
   userValidatorSchema,
-  userControllerSchema
+  userControllerSchema,
+  userValidatorSchemaSignIn
 }

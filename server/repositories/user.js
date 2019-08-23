@@ -19,14 +19,6 @@ const create = async (ctx, token) => {
   }
 }
 
-const findAll = async ctx => {
-  try {
-    return await UserModel.findAll()
-  } catch (err) {
-    throw new Error()
-  }
-}
-
 const update = async (id, guid) => {
   const token = jwtGenerate(guid)
   const payload = {
@@ -48,7 +40,31 @@ const update = async (id, guid) => {
   }
 }
 
-const findOne = async ctx => {
+const findAll = async ctx => {
+  try {
+    return await UserModel.findAll()
+  } catch (err) {
+    throw new Error()
+  }
+}
+
+const findByEmail = async ctx => {
+  try {
+    return await UserModel.findOne({
+      where: {
+        email: ctx.payload.email
+      },
+      include: [{
+        model: PhoneModel,
+        as: 'phones'
+      }]
+    })
+  } catch (err) {
+    throw err
+  }
+}
+
+const findByGuid = async ctx => {
   try {
     return await UserModel.findOne({
       where: {
@@ -61,39 +77,6 @@ const findOne = async ctx => {
     })
   } catch (err) {
     throw err
-  }
-}
-
-const signIn = async ctx => {
-  try {
-    const user = await UserModel.findOne({
-      where: {
-        email: ctx.payload.email
-      },
-      include: [{
-        model: PhoneModel,
-        as: 'phones'
-      }]
-    })
-
-    if (!user) {
-      return errors.notAcceptable(ctx, message.invalidUser)
-    } else if (user && hash.compare(ctx.payload.password, user.password)) {
-      const payload = await update(user.id, user.guid)
-      user.dataValues.lastLogin = payload.lastLogin
-      user.dataValues.token = payload.token
-      delete user.dataValues.id
-      delete user.dataValues.password
-
-      formatFieldDate(user.dataValues)
-
-      ctx.status = 200
-      ctx.body = user
-    } else {
-      return errors.unauthorized(ctx, message.invalidUser)
-    }
-  } catch (err) {
-    return errors.InternalServerError(ctx, err)
   }
 }
 
@@ -131,8 +114,9 @@ const search = async ctx => {
 
 module.exports = {
   create,
-  signIn,
+  update,
   search,
-  findOne,
+  findByGuid,
+  findByEmail,
   findAll
 }

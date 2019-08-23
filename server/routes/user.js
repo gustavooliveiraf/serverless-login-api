@@ -13,7 +13,7 @@ const phoneRepository = require('../repositories/phone')
 
 router.post('/user/sign-up', userValidator.create, phoneValidator.create, getCoordinate,
                              userController.create(userRepository), phoneController.create(phoneRepository))
-      .post('/user/sign-in', userValidator.signIn, userController.signIn)
+      .post('/user/sign-in', userValidator.signIn, userController.signIn(userRepository))
 
 router.get('/user/search/:guid', jwtAuth, userController.search)
 

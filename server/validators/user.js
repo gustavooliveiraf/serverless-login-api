@@ -37,7 +37,7 @@ const signIn = async (ctx, next) => {
   try {
     if ( error === null ) {
       ctx.payload = value
-      await next()
+      return await next(value)
     } else {
       throw new CustomError(error.details)
     }

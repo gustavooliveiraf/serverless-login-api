@@ -1,17 +1,21 @@
 const { Joi } = require('server/utils')
 const phonesController = require('server/controllers/phone')
-const phonesControllerSchema = require('../../schemas/phone')
+const phonesControllerSchema = require('server/routes/tests/schemas/phone')
 
 // ========================= payloads =========================
-const payload = {}
-payload.phones = [{
-    number: '123455678',
-    ddd: '81'
-  }, {
-    number: '1234556780',
-    ddd: '82'
+const payload = {
+  phones: [{
+      number: '123455678',
+      ddd: '81'
+    }, {
+      number: '1234556780',
+      ddd: '82'
+    }
+  ],
+  user: {
+    id: 1
   }
-]
+}
 
 // ========================= auxiliary functions =========================
 const phonesRepository = {
