@@ -6,7 +6,7 @@
     "dev": "cross-env NODE_PATH=. nodemon start.js .env",
     "test": "jest --env --detectOpenHandles",
     "test:silent": "jest --silent --detectOpenHandles",
-    "test:coverage": "jest --coverage --silent"
+    "test:coverage": "jest --env --coverage --silent"
   },
   "repository": {
     "type": "git",
