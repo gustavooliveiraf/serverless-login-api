@@ -7,29 +7,20 @@ const app = require('app.js')
 
 // ========================= payloads =========================
 const payload = {
-  name: 'teste',
-  email: `${Date.now()}@cin.ufpe.br`,
-  password: '123',
-  cep: '50741-100',
-  phones: [{
-    number: '1234567',
-    ddd: '71'
-  }, {
-    number: '123456790',
-    ddd: '81'
-  }]
+  email: 'gof@cin.ufpe.br',
+  password: '123'
 }
 
 // ========================= start test =========================
 describe('user', () => {
-  describe('/sign-up integration', () => {
+  describe('/sign-in integration', () => {
     describe('Success', () => {
       test('create', async () => {
         try {
           const res = await request(app.callback())
-            .post('/user/sign-up')
+            .post('/user/sign-in')
             .send(payload)
-            .expect(201)
+            .expect(200)
 
           const { error, value } = Joi.validate(res.body, userControllerSchema)
 
@@ -43,12 +34,12 @@ describe('user', () => {
     describe('Error', () => {
       test('create', async () => {
         try {
-          const email = 'gof@cin.ufpe.br'
+          const email = `${Date.now()}@cin.ufpe.br`
           payload.email = email
           const res = await request(app.callback())
             .post('/user/sign-up')
             .send(payload)
-            .expect(201)
+            .expect(200)
 
             const { error, value } = Joi.validate(res.body, userControllerSchema)
             

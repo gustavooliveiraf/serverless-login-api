@@ -54,7 +54,7 @@ describe('user', () => {
 
         const { error, value } = Joi.validate(checkPayload, userValidatorSchema)
 
-        expect(error).toBeNull();
+        expect(error).toBeNull()
       })
 
       test('signIn', async () => {
@@ -62,7 +62,7 @@ describe('user', () => {
 
         const { error, value } = Joi.validate(checkPayload, userValidatorSchemaSignIn)
 
-        expect(error).toBeNull();
+        expect(error).toBeNull()
       })
     })
 
@@ -73,7 +73,7 @@ describe('user', () => {
 
         const { error, value } = Joi.validate(checkPayload, userValidatorSchema)
 
-        expect(error).not.toBeNull();
+        expect(error).not.toBeNull()
       })
 
     test('signIn', async () => {
@@ -82,7 +82,7 @@ describe('user', () => {
 
         const { error, value } = Joi.validate(checkPayload, userValidatorSchemaSignIn)
 
-        expect(error).not.toBeNull();
+        expect(error).not.toBeNull()
       })
     })
   })

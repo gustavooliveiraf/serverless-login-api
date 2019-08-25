@@ -24,8 +24,9 @@ const next = (value) => {
 
 // ========================= start test =========================
 describe('utils', () => {
-    describe('Success', () => {
-      test('getCoordinate', async () => {
+  describe('Success', () => {
+    test('getCoordinate', async () => {
+      try {
         nock('https://maps.googleapis.com')
           .get('/maps/api/geocode/json')
           .query({address: payload.user.cep, key: keyMaps})
@@ -40,18 +41,20 @@ describe('utils', () => {
             }]
           })
 
-        const checkPayload = await getCoordinate( { payload }, next)
-
-        nock.cleanAll()
+        const checkPayload = await getCoordinate({payload }, next)
 
         const { error, value } = Joi.validate(checkPayload, coordinateSchema)
 
-        expect(error).toBeNull();
-      })
+        expect(error).toBeNull()
+      } catch (err) {
+        expect(1).toBeNull()
+      }
     })
+  })
 
-    describe('Error', () => {
-      test('getCoordinate', async () => {
+  describe('Error', () => {
+    test('getCoordinate', async () => {
+      try {
         payload.user.cep = '50741-hdghgdg100' // to be false
         nock('https://maps.googleapis.com')
           .get('/maps/api/geocode/json')
@@ -62,7 +65,10 @@ describe('utils', () => {
 
         const { error, value } = Joi.validate(checkPayload, coordinateSchema)
 
-        expect(error).not.toBeNull();
-      })
+        expect(error).not.toBeNull()
+      } catch (err) {
+        expect(1).toBeNull()
+      }
     })
+  })
 })

@@ -8,9 +8,9 @@ const payloadCreate = {
     name: 'gustavo',
     email: 'gof@cin.ufpe.br',
     password: '123',
-    guid: 'Joi.string().max(constant.maxString).required()',
+    guid: '$2a$10$g.1dtBmr/siSJgMoPW0fyOvZzn0nhDSRW40tW72jkkRYh30ajLz/u',
     lastLogin: new Date(),
-    token: '123',
+    token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjoiZ28xMUBjaW4udWZwZS5iciIsImlhdCI6MTU2NjcxNTY0M30.gE-FO-U4nGGEcljRjWYfNapDBL5lZCS-kRmByMckxBs',
     cep: '57041-100',
     lat: -8.0645234,
     lng: -34.8928259,
@@ -19,24 +19,34 @@ const payloadCreate = {
   }
 }
 
-const out = { ...payloadCreate.user }
-out.id = 1
-out.password = '$2a$10$g.1dtBmr/siSJgMoPW0fyOvZzn0nhDSRW40tW72jkkRYh30ajLz/u'
-out.phones = [{
-    number: '123455678',
-    ddd: '81'
-  }, {
-    number: '1234556780',
-    ddd: '82'
-  }
-]
+const payloadOut = {
+  ...payloadCreate.user,
+  id: 1,
+  password: '$2a$10$g.1dtBmr/siSJgMoPW0fyOvZzn0nhDSRW40tW72jkkRYh30ajLz/u',
+  token: '$2a$10$lSMaXZlzmufvoENM5quGI.9TVegSn6yBet3VHdvwMbSVphTZUi63S',
+  phones: [{
+      number: '123455678',
+      ddd: '81'
+    }, {
+      number: '1234556780',
+      ddd: '82'
+    }
+  ]
+}
 
 const payloadSignIn = {
-  in: {
-    email: payloadCreate.user.email,
-    password: payloadCreate.user.password
+  email: payloadCreate.user.email,
+  password: payloadCreate.user.password
+}
+
+const payloadSearch = {
+  headers: {
+    authentication: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjoiZ28xMkBjaW4udWZwZS5iciIsImlhdCI6MTU2NjcxNjEzNX0.DBnyW5XXIvBUlNbytCtB2tM6-11WKbsV2jr0837EcT8'
   },
-  out
+  params: {
+    guid: '3bb8a750-c702-11e9-8525-0972d0e263b7'
+  },
+  user: { ...payloadOut }
 }
 
 // ========================= auxiliary functions =========================
@@ -45,23 +55,22 @@ const next = (value) => {
 }
 
 const userRepository = {
-  create: async (ctx, token) => {
+  findOrCreate: async (ctx, token) => {
     return [{
         dataValues: payloadCreate.user
       },
       true
     ]
   },
-  findByEmail: async (ctx, next, test) => {
-    if (test) return false
-    return { dataValues: payloadSignIn.out }
-  },
   update: async (id, guid) => {
     return {
       token: payloadCreate.user.token,
       lastLogin: new Date()
     }
-  }
+  },
+  findOne: async (field, value) => {
+    return { dataValues: { ...payloadOut } }
+  },
 }
 
 // ========================= start test =========================
@@ -73,11 +82,19 @@ describe('user', () => {
 
         const { error, value } = Joi.validate(checkPayload, userControllerSchema)
 
-        expect(error).toBeNull();
+        expect(error).toBeNull()
       })
 
       test('signIn', async () => {
-        const checkPayload = await userController.signIn(userRepository)({ payload: payloadSignIn.in }, next)
+        const checkPayload = await userController.signIn(userRepository)({ payload: payloadSignIn }, next)
+
+        const { error, value } = Joi.validate(checkPayload, userControllerSchema)
+
+        expect(error).toBeNull()
+      })
+
+      test('search', async () => {
+        const checkPayload = await userController.search(userRepository)(payloadSearch, next)
 
         const { error, value } = Joi.validate(checkPayload, userControllerSchema)
 
@@ -92,12 +109,21 @@ describe('user', () => {
 
         const { error, value } = Joi.validate(checkPayload, userControllerSchema)
 
-        expect(error).not.toBeNull();
+        expect(error).not.toBeNull()
       })
 
       test('signIn', async () => {
+        payloadOut.name = 123
+        const checkPayload = await userController.signIn(userRepository)({ payload: payloadSignIn }, next)
 
-        const checkPayload = await userController.signIn(userRepository)({ payload: payloadSignIn.in }, next, 'teste')
+        const { error, value } = Joi.validate(checkPayload, userControllerSchema)
+
+        expect(error).not.toBeNull()
+      })
+
+      test('search', async () => {
+        payloadOut.name = 123
+        const checkPayload = await userController.search(userRepository)(payloadSearch, next)
 
         const { error, value } = Joi.validate(checkPayload, userControllerSchema)
 

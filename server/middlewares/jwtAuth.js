@@ -11,7 +11,7 @@ const auth = async (ctx, next) => {
     ctx.headers.authentication = ctx.headers.authentication.substr(offset)
     jwt.verify(ctx.headers.authentication, secret)
 
-    await next()
+    return await next(true)
   } catch (err) {
     return errors.unauthorized(ctx, message.unauthorized)
   }

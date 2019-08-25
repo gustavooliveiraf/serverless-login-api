@@ -38,7 +38,7 @@ describe('phone', () => {
 
         const { error, value } = Joi.validate(checkPayload, phonesValidatorSchema)
 
-        expect(error).toBeNull();
+        expect(error).toBeNull()
       })
     })
 
@@ -49,7 +49,7 @@ describe('phone', () => {
 
         const { error, value } = Joi.validate(checkPayload, phonesValidatorSchema)
 
-        expect(error).not.toBeNull();
+        expect(error).not.toBeNull()
       })
     })
   })

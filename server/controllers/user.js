@@ -4,13 +4,13 @@ const create = userRepository => {
   return async (ctx, next) => {
     try {
       const token = jwtGenerate(ctx.payload.user.email)
-      let user = await userRepository.create(ctx, token)
+      let user = await userRepository.findOrCreate(ctx, token)
 
       if (user[1]) {
         user = user[0].dataValues
         ctx.payload.user = user
 
-        formatUser(ctx.payload.user, token)
+        formatUser(ctx.payload.user, false, token)
 
         return await next(ctx.payload.user)
       } else {
@@ -22,27 +22,19 @@ const create = userRepository => {
   }
 }
 
-const findAll = userRepository => {
-  return async (ctx, next) => {
-    const response = await userRepository.findAll()
-
-    ctx.body = response
-  }
-}
-
 const signIn = userRepository => {
   return async (ctx, next) => {
     try {
-      let user = await userRepository.findByEmail(ctx)
+      let user = await userRepository.findOne('email', ctx.payload.email)
 
       if (!user) {
-        return errors.notAcceptable(ctx, message.invalidUser)
+        return errors.badData(ctx, message.invalidUser)
       } else if (user && hash.compare(ctx.payload.password, user.dataValues.password)) {
         user = user.dataValues
 
         const payload = await userRepository.update(user.id, user.guid)
 
-        formatUser(user, payload.token, payload.lastLogin)
+        formatUser(user, true, payload.token, payload.lastLogin)
 
         ctx.status = 200
         return ctx.body = user
@@ -55,31 +47,31 @@ const signIn = userRepository => {
   }
 }
 
-const search = async (ctx, next) => {
-  try {
-    const user = await userRepository.findByGuid(ctx)
-    delete user.dataValues.id
+const search = userRepository => {
+  return async (ctx, next) => {
+    try {
+      let user = await userRepository.findOne('guid', ctx.params.guid)
 
-    if (user && hash.compare(ctx.headers.authentication, user.token)) {
-      if ((Date.now() - user.dataValues.createdAt.valueOf())/constant.msInMinute < constant.limLastLogin) {
-        formatFieldDate(user.dataValues)
-        
-        ctx.status = 200
-        return ctx.body = user
+      if (user && hash.compare(ctx.headers.authentication, user.dataValues.token)) {
+        user = user.dataValues
+        if ((Date.now() - user.createdAt.valueOf())/constant.msInMinute < constant.limLastLogin) {
+          formatUser(user, true)
+          
+          ctx.status = 200
+          return ctx.body = user
+        } else {
+          return errors.unauthorized(ctx, message.invalidSession)
+        }
       } else {
-        return errors.unauthorized(ctx, message.invalidSession)
+        return errors.unauthorized(ctx, message.unauthorized)
       }
-    } else {
-      return errors.unauthorized(ctx, message.unauthorized)
+    } catch (err) {
+      return errors.InternalServerError(ctx, err)
     }
-  } catch (err) {
-    return errors.InternalServerError(ctx, err)
   }
 }
 
-const formatUser = (user, token, lastLogin) => {
-  user.token = token
-
+const formatUser = (user, id, token, lastLogin) => {
   user.geolocation = {
     type: 'Point',
     coordinates: [
@@ -91,11 +83,9 @@ const formatUser = (user, token, lastLogin) => {
   delete user.lat
   delete user.lng
   delete user.password
-
-  if (lastLogin) { // signIn
-    user.lastLogin = lastLogin
-    delete user.id
-  }
+  id ? ( delete user.id ) : null
+  token ? ( user.token = token ) : null
+  lastLogin ? ( user.lastLogin = lastLogin ) : null
 
   formatFieldDate(user)
 }
@@ -109,6 +99,5 @@ const formatFieldDate = (user) => {
 module.exports = {
   create,
   signIn,
-  search,
-  findAll
+  search
 }

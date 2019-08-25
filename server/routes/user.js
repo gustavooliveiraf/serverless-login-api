@@ -1,5 +1,5 @@
-const Router = require('koa-router');
-const router = new Router();
+const Router = require('koa-router')
+const router = new Router()
 const jwtAuth = require('server/middlewares/jwtAuth')
 
 const userValidator = require('server/validators/user')
@@ -15,8 +15,6 @@ router.post('/user/sign-up', userValidator.create, phoneValidator.create, getCoo
                              userController.create(userRepository), phoneController.create(phoneRepository))
       .post('/user/sign-in', userValidator.signIn, userController.signIn(userRepository))
 
-router.get('/user/search/:guid', jwtAuth, userController.search)
-
-router.get('/user', userController.findAll(userRepository))
+router.get('/user/search/:guid', jwtAuth, userController.search(userRepository))
 
 module.exports = router

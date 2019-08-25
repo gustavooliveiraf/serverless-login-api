@@ -1,4 +1,4 @@
-const Koa = require('koa');
+const Koa = require('koa')
 
 const middlewares = require('server/middlewares/main')
 const routes = require('server/routes')

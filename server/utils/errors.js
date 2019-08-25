@@ -9,10 +9,6 @@ const InternalServerError = (ctx, err) => {
   return resultError(ctx, err, HttpStatus.INTERNAL_SERVER_ERROR)
 }
 
-const notAcceptable = (ctx, details) => {
-  return resultWarning(ctx, details, HttpStatus.NOT_ACCEPTABLE)
-}
-
 const badRequest = (ctx, details) => {
   return resultWarning(ctx, details, HttpStatus.BAD_REQUEST)
 }
@@ -37,7 +33,6 @@ const resultError = (ctx, err, statusCode) => {
 module.exports = {
   badData,
   InternalServerError,
-  notAcceptable,
   badRequest,
   unauthorized
 }
