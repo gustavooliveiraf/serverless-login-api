@@ -42,7 +42,7 @@ const update = async (id, guid) => {
 
 const findOne = async (field, value) => {
   try {
-    return await UserModel.findOne({
+    const userModel = await UserModel.findOne({
       where: {
         [field]: value
       },
@@ -52,6 +52,8 @@ const findOne = async (field, value) => {
         attributes: ['number', 'ddd']
       }]
     })
+
+    return userModel
   } catch (err) {
     throw err
   }
