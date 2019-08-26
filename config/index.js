@@ -1,8 +1,4 @@
-require('dotenv').config({ path: process.env.FILE_ENV || '.env' })
-
-console.log('----------')
-console.log(process.env.DBUSERNAME)
-console.log('----------')
+require('dotenv').config({ path: process.env.NODE_ENV || '.env' })
 
 module.exports = {
   secret: process.env.SECRET,

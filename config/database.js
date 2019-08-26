@@ -7,32 +7,12 @@ const [username, password, database, host, port, dialect] = [
   process.env.DBDIALECT
 ]
 
-module.exports = { // apply dotenv
-  test: {
-    username,
-    password,
-    database,
-    host,
-    port,
-    dialect,
-    logging: false
-  },
-  testCloud: {
-    username,
-    password,
-    database,
-    host,
-    port,
-    dialect,
-    logging: false
-  },
-  production: {
-    username,
-    password,
-    database,
-    host,
-    port,
-    dialect,
-    logging: false
-  }
+module.exports = {
+  username,
+  password,
+  database,
+  host,
+  port,
+  dialect,
+  logging: false
 }

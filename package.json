@@ -3,13 +3,13 @@
   "version": "1.0.0",
   "scripts": {
     "start"        : "NODE_PATH=. node start.js",
-    "dev"          : "cross-env NODE_PATH=. FILE_ENV=.env-dev-local nodemon start.js",
-    "dev:cloud"    : "cross-env NODE_PATH=. FILE_ENV=.env-dev-cloud nodemon start.js",
-    "test"         : "FILE_ENV=.env-dev-local jest --silent --forceExit --detectOpenHandles",
-    "test:nosilent": "FILE_ENV=.env-dev-local jest --forceExit --detectOpenHandles",
-    "test:cloud"   : "FILE_ENV=.env-dev-cloud NODE_ENV=testCloud jest --forceExit --detectOpenHandles",
-    "test:coverage": "FILE_ENV=.env-dev-local jest --silent --coverage",
-    "test:coverage:nosilent": "FILE_ENV=.env-dev-local jest --coverage"
+    "dev"          : "cross-env NODE_PATH=. NODE_ENV=.env-dev-local nodemon start.js",
+    "dev:cloud"    : "cross-env NODE_PATH=. NODE_ENV=.env-dev-cloud nodemon start.js",
+    "test"         : "NODE_ENV=.env-dev-local jest --silent --forceExit --detectOpenHandles",
+    "test:nosilent": "NODE_ENV=.env-dev-local jest --forceExit --detectOpenHandles",
+    "test:cloud"   : "NODE_ENV=.env-dev-cloud jest --forceExit --detectOpenHandles",
+    "test:coverage": "NODE_ENV=.env-dev-local jest --silent --coverage",
+    "test:coverage:nosilent": "NODE_ENV=.env-dev-local jest --coverage"
   },
   "repository": {
     "type": "git",

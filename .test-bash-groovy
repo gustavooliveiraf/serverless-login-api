@@ -1,3 +1,5 @@
+#!/bin/sh
+
 if [ "$(docker ps -aq -f name=login-api)" ]; then
     if [ "$(docker ps -aq -f status=running -f name=login-api)" ]; then
         echo passou cima
@@ -7,19 +9,19 @@ if [ "$(docker ps -aq -f name=login-api)" ]; then
         echo passou meio
         docker rm -f login-api
     fi
-
-    docker run -d -p 80:80 --name=login-api oliveiragustavo/login_api-jenkins
-    
-    docker exec -i login-api npm run test:cloud
-    exit_code=$?
-
-    if [ $exit_code -ne 0 ]; then
-        echo passou cimaaaaaaaaaaaaaa
-        docker stop login-api
-        docker rm -f login-api
-        exit 1
-    else
-        echo passou baixooooooooooooo
-    fi
 fi
 
+docker run -d -p 82:80 -v /var/lib/jenkins/workspace/login-api/.env:/api/.env --name=login-api ${image}
+
+docker exec -i login-api npm run test:cloud
+exit_code=$?
+
+docker stop login-api
+docker rm -f login-api
+
+if [ $exit_code -ne 0 ]; then
+	echo passou cimaaaaaaaaaaaaaa
+	exit 1
+else
+	echo passou baixooooooooooooo
+fi
