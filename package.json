@@ -9,7 +9,8 @@
     "test:nosilent": "NODE_ENV=.env-dev-local jest --forceExit --detectOpenHandles",
     "test:cloud"   : "NODE_ENV=.env-dev-cloud jest --forceExit --detectOpenHandles",
     "test:coverage": "NODE_ENV=.env-dev-local jest --silent --coverage",
-    "test:coverage:nosilent": "NODE_ENV=.env-dev-local jest --coverage"
+    "test:coverage:nosilent": "NODE_ENV=.env-dev-local jest --coverage",
+    "test:cloud:jenkins"   : "jest --forceExit --detectOpenHandles"
   },
   "repository": {
     "type": "git",
