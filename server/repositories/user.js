@@ -1,6 +1,6 @@
 const UserModel = require('db/models').User
 const PhoneModel = require('db/models').Phone
-const { message, errors, jwtGenerate, hash, constant } = require('server/utils')
+const { jwtGenerate, hash } = require('server/utils')
 
 const findOrCreate = async (ctx, token) => {
   try {
@@ -20,23 +20,27 @@ const findOrCreate = async (ctx, token) => {
 }
 
 const update = async (id, guid) => {
-  const token = jwtGenerate(guid)
-  const payload = {
-    token: hash.generate(token),
-    lastLogin: new Date()
-  }
-
-  await UserModel.update({
-    ...payload
-  }, {
-    where: {
-      id
+  try {
+    const token = jwtGenerate(guid)
+    const payload = {
+      token: hash.generate(token),
+      lastLogin: new Date()
     }
-  })
 
-  return  {
-    token,
-    lastLogin: payload.lastLogin
+    await UserModel.update({
+      ...payload
+    }, {
+      where: {
+        id
+      }
+    })
+
+    return  {
+      token,
+      lastLogin: payload.lastLogin
+    }
+  } catch (err) {
+    throw err
   }
 }
 

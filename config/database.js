@@ -1,29 +1,38 @@
+const [username, password, database, host, port, dialect] = [
+  process.env.DBUSERNAME,
+  process.env.DBPASSWROD,
+  process.env.DBDATABASE,
+  process.env.DBHOST,
+  process.env.DBPORT,
+  process.env.DBDIALECT
+]
+
 module.exports = { // apply dotenv
   test: {
-    username: 'postgres',
-    password: '123456',
-    database: 'developmentConcrete',
-    host: '127.0.0.1',
-    port: 5432,
-    dialect: 'postgres',
+    username,
+    password,
+    database,
+    host,
+    port,
+    dialect,
     logging: false
   },
-  homologation: {
-    username: 'root',
-    password: 'casa1234',
-    database: 'catalogoHomologation',
-    host: 'catalogo.cf2upeoc5dph.us-east-1.rds.amazonaws.com',
-    port: 5432,
-    dialect: 'postgres',
+  testCloud: {
+    username,
+    password,
+    database,
+    host,
+    port,
+    dialect,
     logging: false
   },
   production: {
-    username: 'root',
-    password: 'casa1234',
-    database: 'catalogo',
-    host: 'catalogo.cf2upeoc5dph.us-east-1.rds.amazonaws.com',
-    port: 5432,
-    dialect: 'postgres',
+    username,
+    password,
+    database,
+    host,
+    port,
+    dialect,
     logging: false
   }
 }

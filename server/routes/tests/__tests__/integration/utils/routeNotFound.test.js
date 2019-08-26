@@ -7,7 +7,7 @@ describe('utils', () => {
       test('search', async () => {
         try {
           const res = await request(app.callback())
-            .get('/an=example-of-a-route-that-does-not-exist')
+            .get('/an-example-of-a-route-that-does-not-exist')
             .expect(200)
 
           expect(res.body).toBeTruthy()

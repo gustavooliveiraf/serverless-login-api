@@ -1,3 +1,4 @@
+const nock = require('nock')
 const request = require('supertest')
 const { Joi } = require('server/utils')
 
@@ -21,6 +22,19 @@ const payload = {
 }
 
 // ========================= start test =========================
+beforeAll(() => {
+  nock.restore()
+})
+
+beforeEach(() => {
+  nock.cleanAll()
+  nock.enableNetConnect()
+})
+
+afterAll(() => {
+  if (!nock.isActive()) nock.activate()
+})
+
 describe('user', () => {
   describe('/sign-up integration', () => {
     describe('Success', () => {

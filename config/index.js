@@ -1,4 +1,4 @@
-require('dotenv').config({ path: process.argv[2] || '--env' })
+require('dotenv').config({ path: process.env.FILE_ENV || '.env' })
 
 module.exports = {
   secret: process.env.SECRET,

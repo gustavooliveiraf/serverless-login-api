@@ -1,9 +1,12 @@
+const nock = require('nock')
 const fetch = require('node-fetch')
 const { errors } = require('server/utils')
 const { keyMaps } = require('config')
 
 const getCoordinate = async (ctx, next) => {
   try {
+    nock.cleanAll()
+
     const response = await (await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${ctx.payload.user.cep}&key=${keyMaps}`)).json()
 
     if (!response || response.results.length === 0) { // Revisar design

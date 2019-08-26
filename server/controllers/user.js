@@ -51,12 +51,10 @@ const search = userRepository => {
   return async (ctx, next) => {
     try {
       let user = await userRepository.findOne('guid', ctx.params.guid)
-
       if (user && hash.compare(ctx.headers.authentication, user.dataValues.token)) {
         user = user.dataValues
         if ((Date.now() - user.createdAt.valueOf())/constant.msInMinute < constant.limLastLogin) {
           formatUser(user, true)
-          
           ctx.status = 200
           return ctx.body = user
         } else {
