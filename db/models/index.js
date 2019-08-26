@@ -1,3 +1,4 @@
+require('dotenv').config({ path: process.env.NODE_ENV || '.env' })
 'use strict';
 const fs = require('fs');
 const path = require('path');
