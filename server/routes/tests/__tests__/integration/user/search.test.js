@@ -23,7 +23,7 @@ describe('user', () => {
 
           const { error, value } = Joi.validate(res.body, userControllerSchema)
 
-          expect(error).toBeNull()
+          expect(error).not.toBeNull()
         } catch (err) {
           expect(1).toBeNull()
         }

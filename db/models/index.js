@@ -1,5 +1,3 @@
-require('dotenv').config({ path: process.env.FILE_ENV || '.env' })
-console.log(process.env.NODE_ENV)
 'use strict';
 
 const fs = require('fs');
