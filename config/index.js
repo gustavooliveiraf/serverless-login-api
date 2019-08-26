@@ -1,5 +1,9 @@
 require('dotenv').config({ path: process.env.FILE_ENV || '.env' })
 
+console.log('----------')
+console.log(process.env.DBUSERNAME)
+console.log('----------')
+
 module.exports = {
   secret: process.env.SECRET,
   port: process.env.PORT,
