@@ -82,7 +82,7 @@ describe('user', () => {
 
         const { error, value } = Joi.validate(checkPayload, userControllerSchema)
 
-        expect(error).toBeNull()
+        expect(error).not.toBeNull()
       })
 
       test('signIn', async () => {
