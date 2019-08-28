@@ -1,22 +1,22 @@
 const nock = require('nock')
 const fetch = require('node-fetch')
 const { errors } = require('server/utils')
-const { keyMaps } = require('config')
+const { linkMaps } = require('config')
 
 const getCoordinate = async (ctx, next) => {
   try {
-    nock.cleanAll()
+    nock.cleanAll() // verify
 
-    const response = await (await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${ctx.payload.user.cep}&key=${keyMaps}`)).json()
+    const response = await (await fetch(linkMaps(ctx.payload.user.cep))).json()
 
-    if (!response || response.results.length === 0) { // Revisar design
+    if (response  && response.results.length > 0) {
+      ctx.payload.user.lat = response.results[0].geometry.location.lat
+      ctx.payload.user.lng = response.results[0].geometry.location.lng
+
+      return await next({ lat: ctx.payload.user.lat, lng: ctx.payload.user.lng })
+    } else {
       throw new Error('CEP inválido.')
     }
-
-    ctx.payload.user.lat = response.results[0].geometry.location.lat
-    ctx.payload.user.lng = response.results[0].geometry.location.lng
-
-    return await next({ lat: ctx.payload.user.lat, lng: ctx.payload.user.lng })
   } catch (err) {
     return errors.badData(ctx, err)
   }

@@ -1,25 +1,24 @@
 const request = require('supertest')
 const { Joi } = require('server/utils')
+const { guidTest, tokenTest } = require('config')
 
-const { userControllerSchema } = require('server/routes/tests/schemas/user')
+const { userControllerSchema } = require('_tests_/schemas/user')
 
 const app = require('app.js')
 
 // ========================= payloads =========================
-const payload = {
-  email: 'gof@cin.ufpe.br',
-  password: '123'
-}
+const guid = guidTest
+const authentication = 'bearer ' + tokenTest
 
 // ========================= start test =========================
 describe('user', () => {
-  describe('/sign-in integration', () => {
+  describe('/search integration', () => {
     describe('Success', () => {
-      test('create', async () => {
+      test('search', async () => {
         try {
           const res = await request(app.callback())
-            .post('/user/sign-in')
-            .send(payload)
+            .get(`/user/search/${guid}`)
+            .set('authentication', authentication)
             .expect(200)
 
           const { error, value } = Joi.validate(res.body, userControllerSchema)
@@ -32,21 +31,19 @@ describe('user', () => {
     })
 
     describe('Error', () => {
-      test('create', async () => {
+      test('search', async () => {
         try {
-          const email = `${Date.now()}@cin.ufpe.br`
-          payload.email = email
           const res = await request(app.callback())
-            .post('/user/sign-up')
-            .send(payload)
-            .expect(200)
+            .get(`/user/search/${'test'}`)
+            .set('authentication', authentication)
+            .expect(401)
 
-            const { error, value } = Joi.validate(res.body, userControllerSchema)
-            
-            expect(error).not.toBeNull()
-          } catch (err) {
-            expect(null).toBeNull()
-          }
+          const { error, value } = Joi.validate(res.body, userControllerSchema)
+
+          expect(error).not.toBeNull()
+        } catch (err) {
+          expect(err.statusCode).toEqual(401)
+        }
       })
     })
   })

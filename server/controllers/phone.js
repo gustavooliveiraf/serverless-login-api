@@ -15,7 +15,7 @@ const create = phoneRepository => {
       ctx.status = 201
       return ctx.body = { ...ctx.payload.user, phones }
     } catch (err) {
-      return errors.InternalServerError(ctx, err)
+      return errors.internalServerError(ctx, err)
     }
   }
 }

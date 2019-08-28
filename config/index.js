@@ -6,7 +6,10 @@ module.exports = {
   bucketName: process.env.BUCKET_NAME,
   bucketApi: process.env.BUCKET_API,
   envDevelopment: true,
-  keyMaps: process.env.KEY_MAPS,
   guidTest: process.env.GUID_TEST,
   tokenTest: process.env.TOKEN_TEST,
+  keyMaps: process.env.KEY_MAPS,
+  linkDomMaps: process.env.LINK_DOM_MAPS,
+  linkApiMaps: process.env.LINK_API_MAPS,
+  linkMaps: (cep) => `${process.env.LINK_DOM_MAPS}${process.env.LINK_API_MAPS}?address=${cep}&key=${process.env.KEY_MAPS}`
 }

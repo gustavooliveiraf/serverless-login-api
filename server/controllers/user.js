@@ -17,7 +17,7 @@ const create = userRepository => {
         return errors.badRequest(ctx, message.emailAlreadyExists)
       }
     } catch (err) {
-      return errors.InternalServerError(ctx, err)
+      return errors.internalServerError(ctx, err)
     }
   }
 }
@@ -42,7 +42,7 @@ const signIn = userRepository => {
         return errors.unauthorized(ctx, message.invalidUser)
       }
     } catch (err) {
-      return errors.InternalServerError(ctx, err)
+      return errors.internalServerError(ctx, err)
     }
   }
 }
@@ -64,7 +64,7 @@ const search = userRepository => {
         return errors.unauthorized(ctx, message.unauthorized)
       }
     } catch (err) {
-      return errors.InternalServerError(ctx, err)
+      return errors.internalServerError(ctx, err)
     }
   }
 }

@@ -1,6 +1,6 @@
 const { Joi } = require('server/utils')
 const userController = require('server/controllers/user')
-const { userControllerSchema } = require('server/routes/tests/schemas/user')
+const { userControllerSchema } = require('_tests_/schemas/user')
 
 // ========================= payloads =========================
 const payloadCreate = {

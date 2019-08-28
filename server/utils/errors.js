@@ -5,7 +5,7 @@ const badData = (ctx, err) => {
   return resultError(ctx, err, HttpStatus.UNPROCESSABLE_ENTITY)
 }
 
-const InternalServerError = (ctx, err) => {
+const internalServerError = (ctx, err) => {
   return resultError(ctx, err, HttpStatus.INTERNAL_SERVER_ERROR)
 }
 
@@ -32,7 +32,7 @@ const resultError = (ctx, err, statusCode) => {
 
 module.exports = {
   badData,
-  InternalServerError,
+  internalServerError,
   badRequest,
   unauthorized
 }

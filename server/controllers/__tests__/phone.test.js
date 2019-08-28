@@ -1,6 +1,6 @@
 const { Joi } = require('server/utils')
 const phonesController = require('server/controllers/phone')
-const phonesControllerSchema = require('server/routes/tests/schemas/phone')
+const phonesControllerSchema = require('_tests_/schemas/phone')
 
 // ========================= payloads =========================
 const payload = {

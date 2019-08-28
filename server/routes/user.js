@@ -2,9 +2,9 @@ const Router = require('koa-router')
 const router = new Router()
 const jwtAuth = require('server/middlewares/jwtAuth')
 
-const userValidator = require('server/validators/user')
+const userValidator = require('./validators/user')
 const userController = require('server/controllers/user')
-const phoneValidator = require('server/validators/phone')
+const phoneValidator = require('./validators/phone')
 const phoneController = require('server/controllers/phone')
 const getCoordinate = require('server/middlewares/getCoordinate')
 

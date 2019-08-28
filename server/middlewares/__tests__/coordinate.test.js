@@ -1,11 +1,11 @@
 const nock = require('nock')
 
 const { Joi } = require('server/utils')
-const coordinateSchema = require('server/routes/tests/schemas/coordinate')
+const coordinateSchema = require('_tests_/schemas/coordinate')
 
 const getCoordinate = require('server/middlewares/getCoordinate')
 
-const { keyMaps } = require('config')
+const { keyMaps, linkDomMaps, linkApiMaps } = require('config')
 
 // ========================= payloads =========================
 const payload = {
@@ -27,8 +27,8 @@ describe('utils', () => {
   describe('Success', () => {
     test('getCoordinate', async () => {
       try {
-        nock('https://maps.googleapis.com')
-          .get('/maps/api/geocode/json')
+        nock(linkDomMaps)
+          .get(linkApiMaps)
           .query({address: payload.user.cep, key: keyMaps})
           .reply(200, {
             results: [{
@@ -56,8 +56,8 @@ describe('utils', () => {
     test('getCoordinate', async () => {
       try {
         payload.user.cep = '50741-hdghgdg100' // to be false
-        nock('https://maps.googleapis.com')
-          .get('/maps/api/geocode/json')
+        nock(linkDomMaps)
+          .get(linkApiMaps)
           .query({ address: payload.user.cep, key: keyMaps })
           .reply(200, { results: [] })
 
