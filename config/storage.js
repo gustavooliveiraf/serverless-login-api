@@ -1,6 +1,6 @@
-const { bucketName, bucketApi } = require('./index')
+const { bucketName, bucketApi } = require('./index');
 
 module.exports = {
   bucketName,
-  bucketApi
-}
+  bucketApi,
+};

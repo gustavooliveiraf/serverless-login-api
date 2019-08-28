@@ -1,11 +1,12 @@
-const bodyParser = require('koa-bodyparser')
-const checkSetContentType = require('./checkSetContentType')
-const { envDevelopment } = require('config')
+const bodyParser = require('koa-bodyparser');
+const { envDevelopment } = require('config');
+const checkSetContentType = require('./checkSetContentType');
 
 module.exports = (app) => {
-  app.use((ctx, next) => checkSetContentType(ctx, next))
+  app.use((ctx, next) => checkSetContentType(ctx, next));
 
-  app.use(bodyParser())
+  app.use(bodyParser());
 
-  if (envDevelopment) app.use(require('koa-logger')())
-}
+  // eslint-disable-next-line global-require
+  if (envDevelopment) app.use(require('koa-logger')());
+};

@@ -4,8 +4,8 @@ const [username, password, database, host, port, dialect] = [
   process.env.DBDATABASE,
   process.env.DBHOST,
   process.env.DBPORT,
-  process.env.DBDIALECT
-]
+  process.env.DBDIALECT,
+];
 
 module.exports = {
   username,
@@ -14,5 +14,5 @@ module.exports = {
   host,
   port,
   dialect,
-  logging: false
-}
+  logging: false,
+};

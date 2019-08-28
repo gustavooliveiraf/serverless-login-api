@@ -1,52 +1,47 @@
-const { Joi, uuid, hash, errors, CustomError } = require('server/utils')
-const schema = require('./schemas/user')
+const {
+  Joi, uuid, hash, errors, CustomError,
+} = require('server/utils');
+const schema = require('./schemas/user');
 
 const create = async (ctx, next) => {
   try {
-    const { phones, ...payload } = ctx.request.body
+    const { phones, ...payload } = ctx.request.body;
 
-    let { error, value } = Joi.validate(payload, schema.userBody)
+    const { error, value } = Joi.validate(payload, schema.userBody);
 
-    if ( error === null ) {
-      value.guid = uuid()
-      value.password = hash.generate(value.password)
-      value.lastLogin = new Date()
+    if (error === null) {
+      value.guid = uuid();
+      value.password = hash.generate(value.password);
+      value.lastLogin = new Date();
 
-      const { error, ...payload } = Joi.validate(value, schema.userModel)
+      ctx.payload = {};
+      ctx.payload.user = value;
 
-      if (error === null) {
-        ctx.payload = {}
-        ctx.payload.user = payload.value
-
-        return await next(payload.value)
-      } else {
-        throw new CustomError(error.details)
-      }
-    } else {
-      throw new CustomError(error.details)
+      return await next(payload.value);
     }
+
+    throw new CustomError(error.details);
   } catch (err) {
-    return errors.badData(ctx, err)
+    return errors.badData(ctx, err);
   }
-}
+};
 
 const signIn = async (ctx, next) => {
-  const payload = ctx.request.body
-  const { error, value } = Joi.validate(payload, schema.signIn)
+  const payload = ctx.request.body;
+  const { error, value } = Joi.validate(payload, schema.signIn);
 
   try {
-    if ( error === null ) {
-      ctx.payload = value
-      return await next(value)
-    } else {
-      throw new CustomError(error.details)
+    if (error === null) {
+      ctx.payload = value;
+      return await next(value);
     }
+    throw new CustomError(error.details);
   } catch (err) {
-    return errors.badData(ctx, err)
+    return errors.badData(ctx, err);
   }
-}
+};
 
 module.exports = {
   create,
-  signIn
-}
+  signIn,
+};

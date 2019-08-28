@@ -1,6 +1,6 @@
 module.exports = {
-  up: async (queryInterface, _) => {
-    await queryInterface.createSchema('security')
-    await queryInterface.createSchema('register')
+  up: async (queryInterface) => {
+    await queryInterface.createSchema('security');
+    await queryInterface.createSchema('register');
   },
-}
+};

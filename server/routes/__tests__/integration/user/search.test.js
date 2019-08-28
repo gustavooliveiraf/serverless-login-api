@@ -1,14 +1,14 @@
-const request = require('supertest')
-const { Joi } = require('server/utils')
-const { guidTest, tokenTest } = require('config')
+const request = require('supertest');
+const { Joi } = require('server/utils');
+const { guidTest, tokenTest } = require('config');
 
-const { userControllerSchema } = require('_tests_/schemas/user')
+const { userControllerSchema } = require('_tests_/schemas/user');
 
-const app = require('app.js')
+const app = require('app.js');
 
 // ========================= payloads =========================
-const guid = guidTest
-const authentication = 'bearer ' + tokenTest
+const guid = guidTest;
+const authentication = `bearer ${tokenTest}`;
 
 // ========================= start test =========================
 describe('user', () => {
@@ -19,16 +19,16 @@ describe('user', () => {
           const res = await request(app.callback())
             .get(`/user/search/${guid}`)
             .set('authentication', authentication)
-            .expect(200)
+            .expect(200);
 
-          const { error, value } = Joi.validate(res.body, userControllerSchema)
+          const { error } = Joi.validate(res.body, userControllerSchema);
 
-          expect(error).toBeNull()
+          expect(error).toBeNull();
         } catch (err) {
-          expect(1).toBeNull()
+          expect(1).toBeNull();
         }
-      })
-    })
+      });
+    });
 
     describe('Error', () => {
       test('search', async () => {
@@ -36,15 +36,15 @@ describe('user', () => {
           const res = await request(app.callback())
             .get(`/user/search/${'test'}`)
             .set('authentication', authentication)
-            .expect(401)
+            .expect(401);
 
-          const { error, value } = Joi.validate(res.body, userControllerSchema)
+          const { error } = Joi.validate(res.body, userControllerSchema);
 
-          expect(error).not.toBeNull()
+          expect(error).not.toBeNull();
         } catch (err) {
-          expect(err.statusCode).toEqual(401)
+          expect(err.statusCode).toEqual(401);
         }
-      })
-    })
-  })
-})
+      });
+    });
+  });
+});

@@ -1,5 +1,5 @@
-const request = require('supertest')
-const app = require('app.js')
+const request = require('supertest');
+const app = require('app.js');
 
 describe('utils', () => {
   describe('/status integration', () => {
@@ -8,13 +8,13 @@ describe('utils', () => {
         try {
           const res = await request(app.callback())
             .get('/status')
-            .expect(200)
+            .expect(200);
 
-          expect(res.body).toBeTruthy()
+          expect(res.body).toBeTruthy();
         } catch (err) {
-          expect(1).toBeNull()
+          expect(1).toBeNull();
         }
-      })
-    })
-  })
-})
+      });
+    });
+  });
+});

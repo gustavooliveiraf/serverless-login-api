@@ -12,4 +12,4 @@ module.exports = {
   linkDomMaps: process.env.LINK_DOM_MAPS,
   linkApiMaps: process.env.LINK_API_MAPS,
   linkMaps: (cep) => `${process.env.LINK_DOM_MAPS}${process.env.LINK_API_MAPS}?address=${cep}&key=${process.env.KEY_MAPS}`
-}
+};

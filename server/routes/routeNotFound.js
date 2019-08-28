@@ -1,9 +1,10 @@
-const Router = require('koa-router')
-const router = new Router()
+const Router = require('koa-router');
 
-router.all('*', ctx => {
-  ctx.status = 200
-  ctx.body = { res:  'Route not found!' }
-})
+const router = new Router();
 
-module.exports = router
+router.all('*', (ctx) => {
+  ctx.status = 200;
+  ctx.body = { res: 'Route not found!' };
+});
+
+module.exports = router;

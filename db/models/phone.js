@@ -1,11 +1,11 @@
-'use strict';
+
 module.exports = (sequelize, DataTypes) => {
   const Phone = sequelize.define('Phone', {
     id: {
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
-      type: DataTypes.INTEGER
+      type: DataTypes.INTEGER,
     },
     userId: {
       allowNull: false,
@@ -13,38 +13,38 @@ module.exports = (sequelize, DataTypes) => {
       references: {
         model: {
           schema: 'security',
-          tableName: 'Users'
+          tableName: 'Users',
         },
         key: 'id',
         as: 'user',
-      }
+      },
     },
     number: {
-      type: DataTypes.BIGINT
+      type: DataTypes.BIGINT,
     },
     ddd: {
-      type: DataTypes.INTEGER
+      type: DataTypes.INTEGER,
     },
     createdAt: {
       allowNull: false,
-      type: DataTypes.DATE
+      type: DataTypes.DATE,
     },
     updatedAt: {
       allowNull: false,
-      type: DataTypes.DATE
-    }
+      type: DataTypes.DATE,
+    },
   }, {
     schema: 'register',
     defaultScope: {
       attributes: {
-        exclude: ['userId', 'createdAt', 'updatedAt']
-      }
-    }
+        exclude: ['userId', 'createdAt', 'updatedAt'],
+      },
+    },
   });
-  Phone.associate = function(models) {
+  Phone.associate = function (models) {
     Phone.belongsTo(models.User, {
-      foreignKey: 'userId'
-    })
+      foreignKey: 'userId',
+    });
   };
   return Phone;
 };

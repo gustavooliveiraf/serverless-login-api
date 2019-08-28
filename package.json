@@ -2,15 +2,15 @@
   "name": "login-api",
   "version": "1.0.0",
   "scripts": {
-    "start"        : "NODE_PATH=. node start.js",
-    "dev"          : "cross-env NODE_PATH=. NODE_ENV=.env-dev-local nodemon start.js",
-    "dev:cloud"    : "cross-env NODE_PATH=. NODE_ENV=.env-dev-cloud nodemon start.js",
-    "test"         : "cross-env NODE_ENV=.env-dev-local jest --silent --forceExit --detectOpenHandles",
+    "start": "NODE_PATH=. node start.js",
+    "dev": "cross-env NODE_PATH=. NODE_ENV=.env-dev-local nodemon start.js",
+    "dev:cloud": "cross-env NODE_PATH=. NODE_ENV=.env-dev-cloud nodemon start.js",
+    "test": "cross-env NODE_ENV=.env-dev-local jest --silent --forceExit --detectOpenHandles",
     "test:nosilent": "cross-env NODE_ENV=.env-dev-local jest --forceExit --detectOpenHandles",
-    "test:cloud"   : "cross-env NODE_ENV=.env-dev-cloud jest --forceExit --detectOpenHandles",
+    "test:cloud": "cross-env NODE_ENV=.env-dev-cloud jest --forceExit --detectOpenHandles",
     "test:coverage": "cross-env NODE_ENV=.env-dev-local jest --silent --coverage",
     "test:coverage:nosilent": "cross-env NODE_ENV=.env-dev-local jest --coverage",
-    "test:cloud:jenkins"   : "cross-env NODE_ENV=.env jest --forceExit --detectOpenHandles"
+    "test:cloud:jenkins": "cross-env NODE_ENV=.env jest --forceExit --detectOpenHandles"
   },
   "repository": {
     "type": "git",
@@ -34,18 +34,20 @@
     "koa-logger": "^3.2.1",
     "koa-router": "^7.4.0",
     "multer": "^1.4.1",
+    "nock": "^10.0.6",
     "node-fetch": "^2.6.0",
     "pg": "^7.11.0",
     "pg-hstore": "^2.3.3",
-    "sequelize": "^5.9.4"
+    "sequelize": "^5.9.4",
+    "uuid": "^3.3.3"
   },
   "devDependencies": {
     "cross-env": "^5.2.0",
-    "gulp": "^4.0.2",
-    "gulp-cli": "^2.2.0",
+    "eslint": "^6.2.2",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.18.2",
     "jest": "^24.8.0",
     "morgan": "^1.9.1",
-    "nock": "^10.0.6",
     "nodemon": "^1.19.1",
     "sequelize-cli": "^5.5.0",
     "supertest": "^4.0.2"

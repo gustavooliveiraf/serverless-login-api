@@ -1,35 +1,33 @@
-const jwtAuth = require('server/middlewares/jwtAuth')
+const jwtAuth = require('server/middlewares/jwtAuth');
 
 // ========================= payloads =========================
 const payload = {
   headers: {
-    authentication: 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjoiZ28zQGNpbi51ZnBlLmJyIiwiaWF0IjoxNTY2NzAzNTU2fQ.HHn-qqzNvZ60__a61DMYaBpyvqJG1ZqrE0um31CsIhk'
-  }
-}
+    authentication: 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjoiZ28zQGNpbi51ZnBlLmJyIiwiaWF0IjoxNTY2NzAzNTU2fQ.HHn-qqzNvZ60__a61DMYaBpyvqJG1ZqrE0um31CsIhk',
+  },
+};
 
 // ========================= auxiliary functions =========================
-const next = (value) => {
-  return value
-}
+const next = (value) => value;
 
 // ========================= start test =========================
 describe('utils', () => {
-    describe('Success', () => {
-      test('jwtAuth', async () => {
-        const checkPayload = await jwtAuth(payload, next)
+  describe('Success', () => {
+    test('jwtAuth', async () => {
+      const checkPayload = await jwtAuth(payload, next);
 
-        expect(checkPayload).toBe(true)
-      })
-    })
+      expect(checkPayload).toBe(true);
+    });
+  });
 
-    describe('Error', () => {
-      test('jwtAuth', async () => {
-        const payloadError = { ...payload }
-        payloadError.headers.authentication = 'test'
+  describe('Error', () => {
+    test('jwtAuth', async () => {
+      const payloadError = { ...payload };
+      payloadError.headers.authentication = 'test';
 
-        const checkPayload = await jwtAuth(payloadError, next)
+      const checkPayload = await jwtAuth(payloadError, next);
 
-        expect(checkPayload).not.toBe(true)
-      })
-    })
-})
+      expect(checkPayload).not.toBe(true);
+    });
+  });
+});

@@ -4,5 +4,5 @@ module.exports = {
   minDomainSegments: 2,
   limLastLogin: 9999999999, // certo -> 30,
   msInMinute: 60000,
-  msOffsetBrazil: 0 // aws-us -> 10800000
-}
+  msOffsetBrazil: 0, // aws-us -> 10800000
+};
