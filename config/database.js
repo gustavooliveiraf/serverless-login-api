@@ -1,3 +1,5 @@
+require('./index');
+
 const [username, password, database, host, port, dialect] = [
   process.env.DBUSERNAME,
   process.env.DBPASSWROD,

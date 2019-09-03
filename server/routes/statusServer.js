@@ -4,7 +4,7 @@ const router = new Router();
 
 router.get('/status', (ctx) => {
   ctx.status = 200;
-  ctx.body = { res: 'Service running.' };
+  ctx.body = { res: `Service running - ${new Date()}.` };
 });
 
 module.exports = router;
