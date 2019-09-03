@@ -1,5 +1,8 @@
 # login-api
 
+## Current coverage
+![current coverage](https://raw.githubusercontent.com/oliveiragustavo/login-api/coverage/coverage.png)
+
 ## Routes
 
 ### sign-up - post
