@@ -8,7 +8,7 @@ describe('utils', () => {
         try {
           const res = await request(app.callback())
             .get('/an-example-of-a-route-that-does-not-exist')
-            .expect(200);
+            .expect(404);
 
           expect(res.body).toBeTruthy();
         } catch (err) {
