@@ -1,6 +1,6 @@
 # login-api
 
-## Current coverage
+## Test - Current coverage
 ![current coverage](https://raw.githubusercontent.com/oliveiragustavo/login-api/coverage/coverage.png)
 
 ## Routes
