@@ -1,9 +1,9 @@
-const Koa = require('koa');
+const express = require('express');
 
 const middlewares = require('server/middlewares/main');
 const routes = require('server/routes');
 
-const app = new Koa();
+const app = express();
 
 middlewares(app);
 routes(app);

@@ -6,14 +6,14 @@ const errors = require('../utils/errors');
 
 const offset = 'Bearer'.length + 1;
 
-const auth = async (ctx, next) => {
+const auth = async (req, res, next) => {
   try {
-    ctx.headers.authentication = ctx.headers.authentication.substr(offset);
-    jwt.verify(ctx.headers.authentication, secret);
+    req.headers.authentication = req.headers.authentication.substr(offset);
+    jwt.verify(req.headers.authentication, secret);
 
-    return await next(true);
+    return next();
   } catch (err) {
-    return errors.unauthorized(ctx, message.unauthorized);
+    return errors.unauthorized(res, message.unauthorized);
   }
 };
 

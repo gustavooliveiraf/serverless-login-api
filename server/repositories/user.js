@@ -2,19 +2,15 @@ const UserModel = require('db/models').User;
 const PhoneModel = require('db/models').Phone;
 const { jwtGenerate, hash } = require('server/utils');
 
-const findOrCreate = async (ctx, token) => {
-  const user = await UserModel.findOrCreate({
-    where: {
-      email: ctx.payload.user.email,
-    },
-    defaults: {
-      ...ctx.payload.user,
-      token: hash.generate(token),
-    },
-  });
-
-  return user;
-};
+const findOrCreate = async (user, token) => UserModel.findOrCreate({
+  where: {
+    email: user.email,
+  },
+  defaults: {
+    ...user,
+    token: hash.generate(token),
+  },
+});
 
 const update = async (id, guid) => {
   const token = jwtGenerate(guid);
@@ -37,20 +33,16 @@ const update = async (id, guid) => {
   };
 };
 
-const findOne = async (field, value) => {
-  const userModel = await UserModel.findOne({
-    where: {
-      [field]: value,
-    },
-    include: [{
-      model: PhoneModel,
-      as: 'phones',
-      attributes: ['number', 'ddd'],
-    }],
-  });
-
-  return userModel;
-};
+const findOne = async (field, value) => UserModel.findOne({
+  where: {
+    [field]: value,
+  },
+  include: [{
+    model: PhoneModel,
+    as: 'phones',
+    attributes: ['number', 'ddd'],
+  }],
+});
 
 module.exports = {
   findOrCreate,

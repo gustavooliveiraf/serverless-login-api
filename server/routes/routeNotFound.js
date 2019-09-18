@@ -1,10 +1,5 @@
-const Router = require('koa-router');
+const router = require('express').Router();
 
-const router = new Router();
-
-router.all('*', (ctx) => {
-  ctx.status = 404;
-  ctx.body = { res: 'Route not found!' };
-});
+router.all('*', (_, res) => res.status(404).send({ res: 'Route not found!' }));
 
 module.exports = router;

@@ -1,18 +1,10 @@
 const HttpStatus = require('http-status-codes');
 const CustomError = require('./CustomError');
 
-const resultWarning = (ctx, details, statusCode) => {
-  ctx.status = statusCode;
-  ctx.body = details;
-  return details;
-};
+const resultError = (res, err, statusCode) => res.status(statusCode)
+  .send(err instanceof CustomError ? err.err : err); // Logstash?!!
 
-const resultError = (ctx, err, statusCode) => {
-  // console.log(err); // Logstash?!!
-  ctx.status = statusCode;
-  ctx.body = err instanceof CustomError ? err.err : err.message;
-  return err;
-};
+const resultWarning = (res, details, statusCode) => res.status(statusCode).send(details);
 
 const badData = (ctx, err) => resultError(ctx, err, HttpStatus.UNPROCESSABLE_ENTITY);
 

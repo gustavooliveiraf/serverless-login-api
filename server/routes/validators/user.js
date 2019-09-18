@@ -3,9 +3,9 @@ const {
 } = require('server/utils');
 const schema = require('./schemas/user');
 
-const create = async (ctx, next) => {
+const create = async (req, res, next) => {
   try {
-    const { phones, ...payload } = ctx.request.body;
+    const { phones, ...payload } = req.body;
 
     const { error, value } = Joi.validate(payload, schema.userBody);
 
@@ -14,30 +14,30 @@ const create = async (ctx, next) => {
       value.password = hash.generate(value.password);
       value.lastLogin = new Date();
 
-      ctx.payload = {};
-      ctx.payload.user = value;
+      req.payload = {};
+      req.payload.user = value;
 
-      return await next(payload.value);
+      return next(payload.value);
     }
 
     throw new CustomError(error.details);
   } catch (err) {
-    return errors.badData(ctx, err);
+    return errors.badData(res, err);
   }
 };
 
-const signIn = async (ctx, next) => {
-  const payload = ctx.request.body;
+const signIn = async (req, res, next) => {
+  const payload = req.body;
   const { error, value } = Joi.validate(payload, schema.signIn);
 
   try {
     if (error === null) {
-      ctx.payload = value;
-      return await next(value);
+      req.payload = value;
+      return next();
     }
     throw new CustomError(error.details);
   } catch (err) {
-    return errors.badData(ctx, err);
+    return errors.badData(res, err);
   }
 };
 

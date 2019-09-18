@@ -1,6 +1,5 @@
-const Router = require('koa-router');
+const router = require('express').Router();
 
-const router = new Router();
 const jwtAuth = require('server/middlewares/jwtAuth');
 
 const userController = require('server/controllers/user');

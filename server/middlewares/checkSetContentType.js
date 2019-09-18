@@ -1,10 +1,10 @@
-const checkSetContentType = async (ctx, next) => {
-  ctx.type = 'application/json';
+const checkSetContentType = async (req, res, next) => {
+  res.type('application/json');
 
-  if (ctx.method !== 'GET' && !ctx.is('application/json')) { // ctx.accepts('json', 'text') -> evaluate/parser
-    ctx.body = 'Content-Type deve ser application/json';
+  if (req.method !== 'GET' && !req.is('application/json')) {
+    res.status(400).json('Content-Type should be application/json');
   } else {
-    await next();
+    next();
   }
 };
 

@@ -1,22 +1,19 @@
 const { errors } = require('server/utils');
 
-const create = (phoneRepository) => async (ctx) => {
+const create = (phoneRepository) => async (req, res) => {
   try {
-    const phones = await Promise.all(ctx.payload.phones.map(async (elem) => {
-      const phone = await phoneRepository.create(ctx, elem);
+    const phones = await Promise.all(req.payload.phones.map(async (elem) => {
+      const phone = await phoneRepository.create(req.payload.user.id, elem);
 
       const { number, ddd } = phone.dataValues;
 
       return { number, ddd };
     }));
-    delete ctx.payload.user.id;
+    delete req.payload.user.id;
 
-    ctx.status = 201;
-    ctx.body = { ...ctx.payload.user, phones };
-
-    return ctx.body;
+    return res.status(201).send({ ...req.payload.user, phones });
   } catch (err) {
-    return errors.internalServerError(ctx, err);
+    return errors.internalServerError(res, err);
   }
 };
 

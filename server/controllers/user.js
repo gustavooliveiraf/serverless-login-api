@@ -33,66 +33,60 @@ const formatUser = (user, id, token, lastLogin) => {
   return formatFieldDate(userContext);
 };
 
-const create = (userRepository) => async (ctx, next) => {
+const create = (userRepository) => async (req, res, next) => {
   try {
-    const token = jwtGenerate(ctx.payload.user.email);
-    let user = await userRepository.findOrCreate(ctx, token);
+    const token = jwtGenerate(req.payload.user.email);
+    let user = await userRepository.findOrCreate(req.payload.user, token);
 
     if (user[1]) {
       user = user[0].dataValues;
-      ctx.payload.user = user;
+      req.payload.user = user;
 
-      ctx.payload.user = formatUser(ctx.payload.user, false, token);
+      req.payload.user = formatUser(req.payload.user, false, token);
 
-      return await next(ctx.payload.user);
+      return next();
     }
-    return errors.badRequest(ctx, message.emailAlreadyExists);
+    return errors.badRequest(res, message.emailAlreadyExists);
   } catch (err) {
-    return errors.internalServerError(ctx, err);
+    return errors.internalServerError(res, err);
   }
 };
 
-const signIn = (userRepository) => async (ctx) => {
+const signIn = (userRepository) => async (req, res) => {
   try {
-    let user = await userRepository.findOne('email', ctx.payload.email);
+    let user = await userRepository.findOne('email', req.payload.email);
 
     if (!user) {
-      return errors.badData(ctx, message.invalidUser);
-    } if (user && hash.compare(ctx.payload.password, user.dataValues.password)) {
+      return errors.badData(res, message.invalidUser);
+    } if (user && hash.compare(req.payload.password, user.dataValues.password)) {
       user = user.dataValues;
 
       const payload = await userRepository.update(user.id, user.guid);
 
       user = formatUser(user, true, payload.token, payload.lastLogin);
 
-      ctx.status = 200;
-      ctx.body = user;
-
-      return ctx.body;
+      return res.status(200).send(user);
     }
-    return errors.unauthorized(ctx, message.invalidUser);
+    return errors.unauthorized(res, message.invalidUser);
   } catch (err) {
-    return errors.internalServerError(ctx, err);
+    return errors.internalServerError(res, err);
   }
 };
 
-const search = (userRepository) => async (ctx) => {
+const search = (userRepository) => async (req, res) => {
   try {
-    let user = await userRepository.findOne('guid', ctx.params.guid);
-    if (user && hash.compare(ctx.headers.authentication, user.dataValues.token)) {
+    let user = await userRepository.findOne('guid', req.params.guid);
+    if (user && hash.compare(req.headers.authentication, user.dataValues.token)) {
       user = user.dataValues;
       if ((Date.now() - user.createdAt.valueOf()) / constant.msInMinute < constant.limLastLogin) {
         user = formatUser(user, true);
-        ctx.status = 200;
-        ctx.body = user;
-
-        return ctx.body;
+        return res.status(200).send(user);
       }
-      return errors.unauthorized(ctx, message.invalidSession);
+      return errors.unauthorized(res, message.invalidSession);
     }
-    return errors.unauthorized(ctx, message.unauthorized);
+    return errors.unauthorized(res, message.unauthorized);
   } catch (err) {
-    return errors.internalServerError(ctx, err);
+    return errors.internalServerError(res, err);
   }
 };
 
