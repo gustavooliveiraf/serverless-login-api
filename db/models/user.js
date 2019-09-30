@@ -1,3 +1,39 @@
+/**
+ * @swagger
+ * definitions:
+ *   User:
+ *     type: object
+ *     properties:
+ *       name:
+ *         type: string
+ *         example: teste
+ *       email:
+ *         type: string
+ *         example: gof@cin.ufpe.br
+ *       password:
+ *         type: string
+ *         format: password
+ *         example: "123"
+ *       cep:
+ *         type: string
+ *         example: "50741100"
+ *       phones:
+ *         type: array
+ *         items:
+ *           type: object
+ *           properties:
+ *             ddd:
+ *               type: string
+ *               example: "81"
+ *             number:
+ *                type: string
+ *                example: "12345678"
+ *     required:
+ *       - name
+ *       - email
+ *       - password
+ *       - cep
+ */
 
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
