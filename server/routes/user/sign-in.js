@@ -10,7 +10,7 @@ module.exports = (router) => {
    *     tags:
    *       - Users
    *     name: Sign-in
-   *     summary: Register a new user
+   *     summary: User login
    *     consumes:
    *       - application/json
    *     produces:
