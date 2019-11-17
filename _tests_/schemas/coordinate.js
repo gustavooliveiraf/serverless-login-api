@@ -1,4 +1,4 @@
-const { Joi } = require('server/utils');
+const { Joi } = require('../../server/utils');
 
 const coordinate = Joi.object().keys({
   lat: Joi.number().required(),

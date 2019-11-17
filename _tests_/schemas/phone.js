@@ -1,4 +1,4 @@
-const { Joi } = require('server/utils');
+const { Joi } = require('../../server/utils');
 
 const phone = Joi.object().keys({
   number: Joi.number().integer().min(10000).max(999999999999)

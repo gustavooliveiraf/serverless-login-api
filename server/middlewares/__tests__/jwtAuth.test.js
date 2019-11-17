@@ -1,4 +1,4 @@
-const jwtAuth = require('server/middlewares/jwtAuth');
+const jwtAuth = require('../jwtAuth');
 
 // ========================= payloads =========================
 const payload = {

@@ -1,6 +1,6 @@
 const {
   Joi, uuid, hash, errors, CustomError,
-} = require('server/utils');
+} = require('../../utils');
 const schema = require('./schemas/user');
 
 const create = async (req, res, next) => {

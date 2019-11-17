@@ -2,7 +2,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const { envDevelopment } = require('config');
+const { envDevelopment } = require('../../config');
 const checkSetContentType = require('./checkSetContentType');
 
 module.exports = (app) => {

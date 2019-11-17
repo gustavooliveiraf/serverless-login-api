@@ -1,10 +1,10 @@
 const request = require('supertest');
-const { Joi } = require('server/utils');
-const { guidTest, tokenTest } = require('config');
+const { Joi } = require('../../../../utils');
+const { guidTest, tokenTest } = require('../../../../../config');
 
-const { userControllerSchema } = require('_tests_/schemas/user');
+const { userControllerSchema } = require('../../../../../_tests_/schemas/user');
 
-const app = require('app.js');
+const app = require('../../../../../app.js');
 
 // ========================= payloads =========================
 const guid = guidTest;

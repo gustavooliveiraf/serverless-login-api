@@ -1,4 +1,4 @@
-const { Joi, errors, CustomError } = require('server/utils');
+const { Joi, errors, CustomError } = require('../../utils');
 const schema = require('./schemas/phone');
 
 const create = async (req, res, next) => {

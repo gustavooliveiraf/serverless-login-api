@@ -1,11 +1,11 @@
 const nock = require('nock');
 
-const { Joi } = require('server/utils');
-const coordinateSchema = require('_tests_/schemas/coordinate');
+const { Joi } = require('../../utils');
+const coordinateSchema = require('../../../_tests_/schemas/coordinate');
 
-const getCoordinate = require('server/middlewares/getCoordinate');
+const getCoordinate = require('../getCoordinate');
 
-const { keyMaps, linkDomMaps, linkApiMaps } = require('config');
+const { keyMaps, linkDomMaps, linkApiMaps } = require('../../../config');
 
 // ========================= payloads =========================
 const payload = {

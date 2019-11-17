@@ -1,6 +1,6 @@
-const UserModel = require('db/models').User;
-const PhoneModel = require('db/models').Phone;
-const { jwtGenerate, hash } = require('server/utils');
+const UserModel = require('../../db/models').User;
+const PhoneModel = require('../../db/models').Phone;
+const { jwtGenerate, hash } = require('../utils');
 
 const findOrCreate = async (user, token) => UserModel.findOrCreate({
   where: {

@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-const { secret } = require('config');
+const { secret } = require('../../config');
 const message = require('../utils/staticMessages');
 const errors = require('../utils/errors');
 

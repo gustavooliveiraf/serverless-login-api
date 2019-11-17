@@ -1,6 +1,6 @@
 const {
   message, errors, jwtGenerate, hash, constant, formatDate,
-} = require('server/utils');
+} = require('../utils');
 
 const formatFieldDate = (user) => {
   const userContext = { ...user };

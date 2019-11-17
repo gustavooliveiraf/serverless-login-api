@@ -1,7 +1,7 @@
 const nock = require('nock');
 const fetch = require('node-fetch');
-const { errors } = require('server/utils');
-const { linkMaps } = require('config');
+const { errors } = require('../utils');
+const { linkMaps } = require('../../config');
 
 const getCoordinate = async (req, res, next) => {
   try {

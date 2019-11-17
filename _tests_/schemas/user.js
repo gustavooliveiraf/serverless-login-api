@@ -1,4 +1,4 @@
-const { Joi, constant, minDomainSegments } = require('server/utils');
+const { Joi, constant, minDomainSegments } = require('../../server/utils');
 const phones = require('./phone');
 
 const userValidatorSchema = Joi.object().keys({

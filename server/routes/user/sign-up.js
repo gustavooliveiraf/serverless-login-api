@@ -1,8 +1,8 @@
-const phoneController = require('server/controllers/phone');
-const getCoordinate = require('server/middlewares/getCoordinate');
+const phoneController = require('../../controllers/phone');
+const getCoordinate = require('../../middlewares/getCoordinate');
 
-const userRepository = require('server/repositories/user');
-const userController = require('server/controllers/user');
+const userRepository = require('../../repositories/user');
+const userController = require('../../controllers/user');
 const userValidator = require('../validators/user');
 
 const phoneValidator = require('../validators/phone');

@@ -1,9 +1,9 @@
 const request = require('supertest');
-const { Joi } = require('server/utils');
+const { Joi } = require('../../../../utils');
 
-const { userControllerSchema } = require('_tests_/schemas/user');
+const { userControllerSchema } = require('../../../../../_tests_/schemas/user');
 
-const app = require('app.js');
+const app = require('../../../../../app.js');
 
 // ========================= payloads =========================
 const payload = {

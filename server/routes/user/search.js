@@ -1,8 +1,8 @@
 /* eslint-disable max-len */
-const userRepository = require('server/repositories/user');
-const userController = require('server/controllers/user');
+const userRepository = require('../../repositories/user');
+const userController = require('../../controllers/user');
 
-const jwtAuth = require('server/middlewares/jwtAuth');
+const jwtAuth = require('../../middlewares/jwtAuth');
 
 module.exports = (router) => {
   /**

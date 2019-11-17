@@ -1,4 +1,4 @@
-const { errors } = require('server/utils');
+const { errors } = require('../utils');
 
 const create = (phoneRepository) => async (req, res) => {
   try {

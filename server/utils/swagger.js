@@ -1,7 +1,7 @@
 const swaggerJSDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 
-const { envDevelopment } = require('config');
+const { envDevelopment } = require('../../config');
 
 module.exports = (app) => {
   if (envDevelopment) {

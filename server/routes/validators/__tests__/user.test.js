@@ -1,7 +1,7 @@
-const { Joi } = require('server/utils');
+const { Joi } = require('../../../utils');
 
-const userValidator = require('server/routes/validators/user');
-const { userValidatorSchema, userValidatorSchemaSignIn } = require('_tests_/schemas/user');
+const userValidator = require('../user');
+const { userValidatorSchema, userValidatorSchemaSignIn } = require('../../../../_tests_/schemas/user');
 
 // ========================= payloads =========================
 const payloadCreate = {

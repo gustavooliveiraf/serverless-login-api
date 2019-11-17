@@ -1,5 +1,5 @@
-const userRepository = require('server/repositories/user');
-const userController = require('server/controllers/user');
+const userRepository = require('../../repositories/user');
+const userController = require('../../controllers/user');
 const userValidator = require('../validators/user');
 
 module.exports = (router) => {

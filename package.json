@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "scripts": {
     "start": "NODE_PATH=. node server.js",
-    "dev": "cross-env NODE_PATH=. NODE_ENV=.env-dev-local nodemon start.js",
-    "dev:cloud": "cross-env NODE_PATH=. NODE_ENV=.env-dev-cloud nodemon start.js",
+    "dev": "cross-env NODE_PATH=. NODE_ENV=.env-dev-local nodemon server.js",
+    "dev:cloud": "cross-env NODE_PATH=. NODE_ENV=.env-dev-cloud nodemon server.js",
     "test": "cross-env NODE_ENV=.env-dev-local jest --silent --forceExit --detectOpenHandles",
     "test:nosilent": "cross-env NODE_ENV=.env-dev-local jest --forceExit --detectOpenHandles",
     "test:cloud": "cross-env NODE_ENV=.env-dev-cloud jest --forceExit --detectOpenHandles",
@@ -38,6 +38,7 @@
     "pg": "^7.11.0",
     "pg-hstore": "^2.3.3",
     "sequelize": "^5.9.4",
+    "serverless-http": "^2.3.0",
     "swagger-jsdoc": "^3.4.0",
     "swagger-ui-express": "^4.1.1",
     "uuid": "^3.3.3"

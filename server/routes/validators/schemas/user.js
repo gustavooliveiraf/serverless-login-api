@@ -1,4 +1,4 @@
-const { Joi, constant, minDomainSegments } = require('server/utils');
+const { Joi, constant, minDomainSegments } = require('../../../utils');
 
 const userBody = Joi.object().keys({
   name: Joi.string().max(constant.maxString).required(),

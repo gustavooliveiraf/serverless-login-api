@@ -5,7 +5,7 @@ module.exports = {
   port: process.env.PORT,
   bucketName: process.env.BUCKET_NAME,
   bucketApi: process.env.BUCKET_API,
-  envDevelopment: !process.env.PRODUCTION,
+  envDevelopment: process.env.NODE_ENV,
   guidTest: process.env.GUID_TEST,
   tokenTest: process.env.TOKEN_TEST,
   keyMaps: process.env.KEY_MAPS,
