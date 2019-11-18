@@ -24,6 +24,7 @@
   "homepage": "https://github.com/oliveiragustavo/login-api#readme",
   "dependencies": {
     "@hapi/joi": "^15.1.0",
+    "aws-sdk": "^2.573.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
@@ -52,6 +53,7 @@
     "morgan": "^1.9.1",
     "nodemon": "^1.19.1",
     "sequelize-cli": "^5.5.0",
+    "serverless-dynamodb-local": "^0.2.38",
     "supertest": "^4.0.2"
   }
 }

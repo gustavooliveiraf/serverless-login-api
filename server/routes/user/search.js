@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-const userRepository = require('../../repositories/user');
+const userRepository = require('../../repositories/rds/user');
 const userController = require('../../controllers/user');
 
 const jwtAuth = require('../../middlewares/jwtAuth');

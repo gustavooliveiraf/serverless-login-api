@@ -16,7 +16,7 @@ module.exports = (app) => {
 
     const options = {
       swaggerDefinition,
-      apis: ['./server/routes/**/*.js', './db/models/*.js'],
+      apis: ['./server/routes/**/*.js', './db/rds/models/*.js'],
     };
 
     const swaggerSpec = swaggerJSDoc(options);

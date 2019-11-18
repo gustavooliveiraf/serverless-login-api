@@ -1,12 +1,14 @@
-const phoneController = require('../../controllers/phone');
 const getCoordinate = require('../../middlewares/getCoordinate');
 
-const userRepository = require('../../repositories/user');
-const userController = require('../../controllers/user');
 const userValidator = require('../validators/user');
+const userController = require('../../controllers/user');
+
+const userRepository = require('../../repositories/dynamodb/user');
+// const userRepository = require('../../repositories/rds/user');
 
 const phoneValidator = require('../validators/phone');
-const phoneRepository = require('../../repositories/phone');
+// const phoneController = require('../../controllers/phone');
+// const phoneRepository = require('../../repositories/rds/phone');
 
 module.exports = (router) => {
   /**
@@ -35,5 +37,5 @@ module.exports = (router) => {
    */
 
   router.post('/user/sign-up', userValidator.create, phoneValidator.create, getCoordinate,
-    userController.create(userRepository), phoneController.create(phoneRepository));
+    userController.create(userRepository)); //, phoneController.create(phoneRepository));
 };

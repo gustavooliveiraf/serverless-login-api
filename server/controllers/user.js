@@ -38,6 +38,8 @@ const create = (userRepository) => async (req, res, next) => {
     const token = jwtGenerate(req.payload.user.email);
     let user = await userRepository.findOrCreate(req.payload.user, token);
 
+    return res.status(200).send(user)
+
     if (user[1]) {
       user = user[0].dataValues;
       req.payload.user = user;

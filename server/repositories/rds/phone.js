@@ -1,4 +1,4 @@
-const PhoneModel = require('../../db/models').Phone;
+const PhoneModel = require('../../../db/rds/models').Phone;
 
 const create = async (userId, elem) => PhoneModel.create({
   userId,

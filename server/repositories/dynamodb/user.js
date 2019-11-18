@@ -1,16 +1,27 @@
-const UserModel = require('../../db/models').User;
-const PhoneModel = require('../../db/models').Phone;
-const { jwtGenerate, hash } = require('../utils');
+const dynamoDb = require('../../../db/dynamodb');
+const { jwtGenerate, hash } = require('../../utils');
 
-const findOrCreate = async (user, token) => UserModel.findOrCreate({
-  where: {
-    email: user.email,
-  },
-  defaults: {
-    ...user,
-    token: hash.generate(token),
-  },
-});
+const USERS_TABLE = process.env.USERS_TABLE;
+
+const findOrCreate = async (user, token) => {
+  const params = {
+    TableName: USERS_TABLE,
+    Item: {
+      ...user,
+      token: hash.generate(token),
+    },
+  };
+
+  dynamoDb.put(params, (error) => {
+    if (error) {
+      console.log(error);
+      res.status(400).json(USERS_TABLE);
+    }
+    res.json(params);
+  });
+
+  return { ...user, teste: USERS_TABLE };
+}
 
 const update = async (id, guid) => {
   const token = jwtGenerate(guid);

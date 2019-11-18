@@ -1,4 +1,4 @@
-const userRepository = require('../../repositories/user');
+const userRepository = require('../../repositories/rds/user');
 const userController = require('../../controllers/user');
 const userValidator = require('../validators/user');
 
