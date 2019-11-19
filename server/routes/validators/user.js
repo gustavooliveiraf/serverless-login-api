@@ -5,7 +5,7 @@ const schema = require('./schemas/user');
 
 const create = async (req, res, next) => {
   try {
-    const { phones, ...payload } = req.body;
+    const { ...payload } = req.body;
 
     const { error, value } = Joi.validate(payload, schema.userBody);
 

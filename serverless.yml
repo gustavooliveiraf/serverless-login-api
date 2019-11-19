@@ -9,9 +9,9 @@ service: serverless-aws-nodejs-dynamodb
 
 custom:
   tableName: 'users-tables-${self:provider.stage}'
-  # dynamodb:
-  #   stages:
-  #     - ${self:provider.stage}
+  dynamodb:
+    stages:
+      - dev
 
 # The `provider` block defines where your service will be deployed
 provider:
@@ -31,6 +31,7 @@ provider:
         - { "Fn::GetAtt": ["UsersDynamoDBTable", "Arn" ] }
   environment:
     USERS_TABLE: ${self:custom.tableName}
+    DB: RDS
 
 functions:
   AppFunction:
@@ -63,5 +64,6 @@ resources:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
 
-# plugins:
-#   - serverless-dynamodb-local
+plugins:
+  - serverless-offline
+  - serverless-dynamodb-local

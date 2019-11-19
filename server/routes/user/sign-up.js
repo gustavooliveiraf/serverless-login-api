@@ -6,10 +6,6 @@ const userController = require('../../controllers/user');
 const userRepository = require('../../repositories/dynamodb/user');
 // const userRepository = require('../../repositories/rds/user');
 
-const phoneValidator = require('../validators/phone');
-// const phoneController = require('../../controllers/phone');
-// const phoneRepository = require('../../repositories/rds/phone');
-
 module.exports = (router) => {
   /**
    * @swagger
@@ -36,6 +32,6 @@ module.exports = (router) => {
    *         description: Username or email already taken
    */
 
-  router.post('/user/sign-up', userValidator.create, phoneValidator.create, getCoordinate,
-    userController.create(userRepository)); //, phoneController.create(phoneRepository));
+  router.post('/user/sign-up', userValidator.create, getCoordinate,
+    userController.create(userRepository));
 };

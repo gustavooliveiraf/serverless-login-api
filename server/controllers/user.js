@@ -1,18 +1,8 @@
 const {
-  message, errors, jwtGenerate, hash, constant, formatDate,
+  message, errors, jwtGenerate, hash,
 } = require('../utils');
 
-const formatFieldDate = (user) => {
-  const userContext = { ...user };
-
-  userContext.createdAt = formatDate(userContext.createdAt);
-  userContext.updatedAt = formatDate(userContext.updatedAt);
-  userContext.lastLogin = formatDate(userContext.lastLogin);
-
-  return userContext;
-};
-
-const formatUser = (user, id, token, lastLogin) => {
+const formatUser = (user, token, lastLogin) => {
   const userContext = { ...user };
 
   userContext.geolocation = {
@@ -26,50 +16,26 @@ const formatUser = (user, id, token, lastLogin) => {
   delete userContext.lat;
   delete userContext.lng;
   delete userContext.password;
-  if (id) delete userContext.id;
+  delete userContext.id;
+
   if (token) userContext.token = token;
   if (lastLogin) userContext.lastLogin = lastLogin;
 
-  return formatFieldDate(userContext);
+  return userContext;
 };
 
-const create = (userRepository) => async (req, res, next) => {
+const create = (userRepository) => async (req, res) => {
   try {
     const token = jwtGenerate(req.payload.user.email);
-    let user = await userRepository.findOrCreate(req.payload.user, token);
 
-    return res.status(200).send(user)
+    const userNotExist = await userRepository.findOrCreate(req.payload.user, token);
 
-    if (user[1]) {
-      user = user[0].dataValues;
-      req.payload.user = user;
-
-      req.payload.user = formatUser(req.payload.user, false, token);
-
-      return next();
+    if (userNotExist) {
+      const user = formatUser(req.payload.user, token, Date.now());
+      return res.status(201).send(user);
     }
+
     return errors.badRequest(res, message.emailAlreadyExists);
-  } catch (err) {
-    return errors.internalServerError(res, err);
-  }
-};
-
-const signIn = (userRepository) => async (req, res) => {
-  try {
-    let user = await userRepository.findOne('email', req.payload.email);
-
-    if (!user) {
-      return errors.badData(res, message.invalidUser);
-    } if (user && hash.compare(req.payload.password, user.dataValues.password)) {
-      user = user.dataValues;
-
-      const payload = await userRepository.update(user.id, user.guid);
-
-      user = formatUser(user, true, payload.token, payload.lastLogin);
-
-      return res.status(200).send(user);
-    }
-    return errors.unauthorized(res, message.invalidUser);
   } catch (err) {
     return errors.internalServerError(res, err);
   }
@@ -77,15 +43,11 @@ const signIn = (userRepository) => async (req, res) => {
 
 const search = (userRepository) => async (req, res) => {
   try {
-    let user = await userRepository.findOne('guid', req.params.guid);
-    if (user && hash.compare(req.headers.authentication, user.dataValues.token)) {
-      user = user.dataValues;
-      if ((Date.now() - user.createdAt.valueOf()) / constant.msInMinute < constant.limLastLogin) {
-        user = formatUser(user, true);
-        return res.status(200).send(user);
-      }
-      return errors.unauthorized(res, message.invalidSession);
+    const user = await userRepository.findOne(req.params.guid);
+    if (user && hash.compare(req.headers.authentication, user.token)) {
+      return res.status(200).send(user);
     }
+
     return errors.unauthorized(res, message.unauthorized);
   } catch (err) {
     return errors.internalServerError(res, err);
@@ -94,6 +56,5 @@ const search = (userRepository) => async (req, res) => {
 
 module.exports = {
   create,
-  signIn,
   search,
 };

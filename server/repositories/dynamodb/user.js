@@ -1,62 +1,61 @@
 const dynamoDb = require('../../../db/dynamodb');
-const { jwtGenerate, hash } = require('../../utils');
+const { hash } = require('../../utils');
 
-const USERS_TABLE = process.env.USERS_TABLE;
+const { USERS_TABLE } = process.env;
 
 const findOrCreate = async (user, token) => {
-  const params = {
-    TableName: USERS_TABLE,
-    Item: {
-      ...user,
-      token: hash.generate(token),
-    },
-  };
+  try {
+    // let params = {
+    //   TableName: USERS_TABLE,
+    //   Key: {
+    //     email: user.email,
+    //   },
+    // };
 
-  dynamoDb.put(params, (error) => {
-    if (error) {
-      console.log(error);
-      res.status(400).json(USERS_TABLE);
-    }
-    res.json(params);
-  });
+    // console.log(user)
+    // const getUser = await dynamoDb.get(params).promise();
+    // if (Object.keys(getUser).length > 0) return false;
 
-  return { ...user, teste: USERS_TABLE };
-}
+    params = {
+      TableName: USERS_TABLE,
+      Item: {
+        ...user,
+        token: hash.generate(token),
+      },
+    };
 
-const update = async (id, guid) => {
-  const token = jwtGenerate(guid);
-  const payload = {
-    token: hash.generate(token),
-    lastLogin: new Date(),
-  };
+    await dynamoDb.put(params).promise();
 
-  await UserModel.update({
-    ...payload,
-  }, {
-    where: {
-      id,
-    },
-  });
-
-  return {
-    token,
-    lastLogin: payload.lastLogin,
-  };
+    return true;
+  } catch (err) {
+    // log(err)
+    console.log(err)
+    return false;
+  }
 };
 
-const findOne = async (field, value) => UserModel.findOne({
-  where: {
-    [field]: value,
-  },
-  include: [{
-    model: PhoneModel,
-    as: 'phones',
-    attributes: ['number', 'ddd'],
-  }],
-});
+const findOne = async (guid) => {
+  try {
+    const params = {
+      TableName: USERS_TABLE,
+      Key: {
+        guid,
+      },
+    };
+
+    const user = await dynamoDb.get(params).promise();
+
+    console.log(user)
+
+    return user.Item;
+  } catch (err) {
+    // log(err)
+    console.log(err)
+    return false;
+  }
+};
 
 module.exports = {
   findOrCreate,
-  update,
   findOne,
 };

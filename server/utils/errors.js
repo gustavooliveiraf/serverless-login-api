@@ -1,8 +1,10 @@
 const HttpStatus = require('http-status-codes');
 const CustomError = require('./CustomError');
 
+// Logstash?!!
+
 const resultError = (res, err, statusCode) => res.status(statusCode)
-  .send(err instanceof CustomError ? err.err : err); // Logstash?!!
+  .send(err instanceof CustomError ? err.err : err);
 
 const resultWarning = (res, details, statusCode) => res.status(statusCode).send(details);
 

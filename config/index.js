@@ -11,5 +11,5 @@ module.exports = {
   keyMaps: process.env.KEY_MAPS,
   linkDomMaps: process.env.LINK_DOM_MAPS,
   linkApiMaps: process.env.LINK_API_MAPS,
-  linkMaps: (cep) => `${process.env.LINK_DOM_MAPS}${process.env.LINK_API_MAPS}?address=${cep}&key=${process.env.KEY_MAPS}`
+  linkMaps: (cep) => `${process.env.LINK_DOM_MAPS}${process.env.LINK_API_MAPS}?address=${cep}&key=${process.env.KEY_MAPS}`,
 };
