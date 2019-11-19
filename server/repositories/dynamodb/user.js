@@ -5,18 +5,19 @@ const { USERS_TABLE } = process.env;
 
 const findOrCreate = async (user, token) => {
   try {
-    // let params = {
-    //   TableName: USERS_TABLE,
-    //   Key: {
-    //     email: user.email,
-    //   },
-    // };
+    const paramsGet = {
+      TableName: USERS_TABLE,
+      IndexName: 'findByEmail',
+      KeyConditionExpression: 'email = :email',
+      ExpressionAttributeValues: {
+        ':email': user.email,
+      },
+    };
 
-    // console.log(user)
-    // const getUser = await dynamoDb.get(params).promise();
-    // if (Object.keys(getUser).length > 0) return false;
+    const getUser = await dynamoDb.query(paramsGet).promise();
+    if (Object.keys(getUser.Items).length > 0) return false;
 
-    params = {
+    const paramsPut = {
       TableName: USERS_TABLE,
       Item: {
         ...user,
@@ -24,12 +25,12 @@ const findOrCreate = async (user, token) => {
       },
     };
 
-    await dynamoDb.put(params).promise();
+    await dynamoDb.put(paramsPut).promise();
 
     return true;
   } catch (err) {
     // log(err)
-    console.log(err)
+    console.log(err);
     return false;
   }
 };
@@ -45,12 +46,10 @@ const findOne = async (guid) => {
 
     const user = await dynamoDb.get(params).promise();
 
-    console.log(user)
-
     return user.Item;
   } catch (err) {
     // log(err)
-    console.log(err)
+    console.log(err);
     return false;
   }
 };

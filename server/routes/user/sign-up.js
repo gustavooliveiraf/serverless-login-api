@@ -3,8 +3,7 @@ const getCoordinate = require('../../middlewares/getCoordinate');
 const userValidator = require('../validators/user');
 const userController = require('../../controllers/user');
 
-const userRepository = require('../../repositories/dynamodb/user');
-// const userRepository = require('../../repositories/rds/user');
+const userRepository = require('../../repositories');
 
 module.exports = (router) => {
   /**

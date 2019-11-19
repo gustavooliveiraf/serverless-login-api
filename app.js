@@ -11,5 +11,5 @@ swagger(app);
 middlewares(app);
 routes(app);
 
-// module.exports = app;
-module.exports.lambdaHandler = serverless(app);
+if (process.env.IS_OFFLINE) module.exports.lambdaHandler = serverless(app);
+else module.exports = app;
