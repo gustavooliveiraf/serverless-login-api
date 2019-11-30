@@ -38,7 +38,7 @@
     "node-fetch": "^2.6.0",
     "pg": "^7.11.0",
     "pg-hstore": "^2.3.3",
-    "sequelize": "^5.9.4",
+    "sequelize": "^5.15.1",
     "serverless-dynamodb-local": "^0.2.38",
     "serverless-http": "^2.3.0",
     "swagger-jsdoc": "^3.4.0",
